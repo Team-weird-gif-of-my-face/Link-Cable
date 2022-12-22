@@ -23,7 +23,7 @@ Whether you're looking for a casual gaming buddy or a long-term relationship, ou
 
 ## Entity Relationship Diagram
 
-![ERD](./ERD.png)
+![ERD](./main_app/static/images/ERD.png)
 
 
 ## USER STORIES
@@ -41,13 +41,12 @@ As a user, AAU, I want the ability to...
 
 ## Wireframes
 
-![Index](URL)
+![Login/Signup](main_app/static/images/login.png)
 
 
 ## Screenshots
 
 ![Index](URL)
-![Home](URL)
 
 
 

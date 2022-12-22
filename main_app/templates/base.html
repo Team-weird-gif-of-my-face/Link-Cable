@@ -8,19 +8,21 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Link Cable</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body>
   <header class="navbar-fixed">
     <nav>
-      <div class="nav-wrapper">
+      <div class="nav-wrapper grey">
         <ul>
-          <li><a href="{% url 'home' %}" class="left brand-logo">&nbsp;&nbsp;Link Cable</a></li>
+          <li>&nbsp;&nbsp;&nbsp;<img src="/static/images/joypad.png" class="logo-image" width="40px" height="40px"><a href="{% url 'home' %}" class="left brand-logo">&nbsp;&nbsp;Link Cable</a></li>
         </ul>
         <ul class="right">
           <li><a href="{% url 'home' %}">Home</a></li>
-          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'about' %}">About Us</a></li>
+          <li><img src="/static/images/buttons.png" class="logo-image" width="160px" height="38px"></li>
         </ul>
       </div>
     </nav>
@@ -29,7 +31,7 @@
     {% block content %}
     {% endblock %}
   </main>
-  <footer class="page-footer">
+  <footer class="page-footer grey">
     <div class="right">All Rights Reserved, &copy; 2022 Team Owen &nbsp;</div>
   </footer>
 </body>
