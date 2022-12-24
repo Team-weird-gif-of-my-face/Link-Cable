@@ -19,9 +19,9 @@
           <li>&nbsp;&nbsp;&nbsp;<img src="/static/images/joypad.png" class="logo-image" width="40px" height="40px"><a href="{% url 'home' %}" class="left brand-logo black-text">&nbsp;&nbsp;Link Cable</a></li>
         </ul>
         <ul class="right">
+          <li><a class="black-text" href="{% url 'home' %}">Home</a></li>
           <li><a class="black-text" href="{% url 'about' %}">About Us</a></li>
           {% if user.is_authenticated %}
-            <li><a class="black-text" href="{% url 'home' %}">Home</a></li>
             {% comment %} <li><a class="black-text" href="{% url 'index' %}">Profile</a></li> {% endcomment %}
             <li><a class="black-text" href="{% url 'connect' %}">Let's Connect!</a></li>
             <li><a href="{% url 'logout' %}">Log Out</a></li>

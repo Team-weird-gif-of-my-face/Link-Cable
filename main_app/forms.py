@@ -8,5 +8,6 @@ class UserSignUpForm(ModelForm):
         fields = ['username', 'password', 'email', 'first_name', 'last_name']
 
 class ProfileForm(ModelForm):
-    model = Profile
-    fields = ['age', 'gender', 'bio', 'favorite_games']
+    class Meta:
+        model = Profile
+        fields = ['age', 'gender', 'bio']
