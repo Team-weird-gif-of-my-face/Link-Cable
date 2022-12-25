@@ -14,6 +14,9 @@ class Game(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    display_name = models.CharField(max_length=25)
+    first_name = models.CharField(max_length=25)
+    last_name = models.CharField(max_length=25)
     age = models.PositiveIntegerField()
     gender = models.CharField(
         max_length=1,

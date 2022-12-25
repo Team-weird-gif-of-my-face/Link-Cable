@@ -22,7 +22,7 @@
           <li><a class="black-text" href="{% url 'home' %}">Home</a></li>
           <li><a class="black-text" href="{% url 'about' %}">About Us</a></li>
           {% if user.is_authenticated %}
-            {% comment %} <li><a class="black-text" href="{% url 'index' %}">Profile</a></li> {% endcomment %}
+            <li><a class="black-text" href="{% url 'profile' %}">Profile</a></li>
             <li><a class="black-text" href="{% url 'connect' %}">Let's Connect!</a></li>
             <li><a href="{% url 'logout' %}">Log Out</a></li>
             {% comment %} <li><img src="/static/images/buttons.png" class="logo-image" width="160px" height="38px"></li> {% endcomment %}

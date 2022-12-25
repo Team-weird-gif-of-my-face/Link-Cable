@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from .forms import UserSignUpForm, ProfileForm
+from django.contrib.auth.forms import UserCreationForm
+from .forms import ProfileForm
 from .models import Profile
 
 
@@ -21,19 +22,22 @@ def connect(request):
 def profile(request):
     return render(request, 'profile.html')
 
+
 def signup(request):
   error_message = ''
   if request.method == 'POST':
-    form = UserSignUpForm(request.POST)
+    form = UserCreationForm(request.POST)
     if form.is_valid():
       user = form.save()
       login(request, user)
       return redirect('create_profile')
     else:
       error_message = 'Invalid sign up - try again'
-  form = UserSignUpForm()
+  form = UserCreationForm()
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
+
+
 
 @login_required
 def create_profile(request):
@@ -54,3 +58,18 @@ def create_profile(request):
     form = ProfileForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/create_profile.html', context)
+
+
+# def signup(request):
+#   error_message = ''
+#   if request.method == 'POST':
+#     form = UserSignUpForm(request.POST)
+#     if form.is_valid():
+#       user = form.save()
+#       login(request, user)
+#       return redirect('create_profile')
+#     else:
+#       error_message = 'Invalid sign up - try again'
+#   form = UserSignUpForm()
+#   context = {'form': form, 'error_message': error_message}
+#   return render(request, 'registration/signup.html', context)
