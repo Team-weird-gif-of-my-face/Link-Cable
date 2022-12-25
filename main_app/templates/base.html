@@ -29,7 +29,7 @@
         {% else %}
           <li><a class="black-text" href="{% url 'profile' profile_id=user.profile.id %}">Profile</a></li>
         {% endif %}
-            <li>Hello, {{ user.profile.first_name }}! </li>
+            <li>Hello {{ user.profile.first_name }}! </li>
             <li><a href="{% url 'logout' %}">Log Out</a></li>
           {% else %}
           <li><a href="{% url 'signup' %}">Sign Up</a></li>

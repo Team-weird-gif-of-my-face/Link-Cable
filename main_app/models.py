@@ -26,7 +26,7 @@ class Profile(models.Model):
     favorite_games = models.ManyToManyField(Game)
 
     def get_absolute_url(self):
-        return reverse('profile', kwargs={'profile_id': self.pk})
+        return reverse('profile', kwargs={'profile_id': self.id})
 
 class Photo(models.Model):
     url = models.CharField(max_length=200)
@@ -37,6 +37,11 @@ class Photo(models.Model):
 
 class Preference(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    gender = models.CharField(max_length=1, choices=GENDER)
+    gender = models.CharField(
+        max_length=1,
+        choices=GENDER)
     min_age = models.PositiveIntegerField()
     max_age = models.PositiveIntegerField()
+
+    def get_absolute_url(self):
+        return reverse('preference', kwargs={'preference_id': self.pk})

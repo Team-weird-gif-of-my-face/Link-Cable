@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Create Profile</h1>
+<h1>Add Preference</h1>
 
 <form method="POST" action="">
   {% csrf_token %}
   {{ form.as_p }}
-  <input type="submit" class="btn" value="Next">
+  <input type="submit" class="btn" value="Save">
 </form>
 <script>
   const selectEl = document.getElementById('id_gender');

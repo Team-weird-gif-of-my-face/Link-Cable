@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from .forms import ProfileForm
+from .forms import ProfileForm, PreferenceForm
 from .models import Profile, Photo, User
 
 # Create your views here.
@@ -22,12 +22,8 @@ def connect(request):
 
 @login_required
 def profile(request, profile_id):
-    try:
-        profile = Profile.objects.get(id=profile_id)
-        return render(request, 'profile.html', {'profile': profile})
-    except User.DoesNotExist:
-        return redirect('create_profile')
-
+  profile = Profile.objects.get(id=profile_id)
+  return render(request, 'profile.html', {'profile': profile})
 
 def signup(request):
   error_message = ''
@@ -43,8 +39,6 @@ def signup(request):
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
 
-
-
 @login_required
 def create_profile(request):
   error_message = ''
@@ -58,12 +52,28 @@ def create_profile(request):
         profile = form.save(commit=False)
         profile.user = request.user
         profile.save()
-        return redirect('home')
+        return redirect('add_preference', profile_id=profile.pk)
       else:
         error_message = 'Invalid profile - try again'
     form = ProfileForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/create_profile.html', context)
+
+@login_required
+def add_preference(request):
+  error_message = ''
+  if request.method == 'POST':
+      form = PreferenceForm(request.POST)
+      if form.is_valid():
+        preference = form.save(commit=False)
+        preference.profile = request.profile
+        preference.save()
+        return redirect('home')
+      else:
+        error_message = 'Invalid preference - try again'
+        form = PreferenceForm()
+        context = {'form': form, 'error_message': error_message}
+        return render(request, 'registration/add_preference.html', context)
 
 
 # def add_photo(request, profile_id):
