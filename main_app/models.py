@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 GENDER = (
   ('M', 'Male'),
@@ -24,8 +25,18 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)
     favorite_games = models.ManyToManyField(Game)
 
-# class Preference(models.Model):
-#     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-#     gender = models.CharField(max_length=1, choices=[('M', 'Male'), ('F', 'Female')])
-#     min_age = models.PositiveIntegerField()
-#     max_age = models.PositiveIntegerField()
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={'profile_id': self.pk})
+
+class Photo(models.Model):
+    url = models.CharField(max_length=200)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Photo for profile_id: {self.profile_id} @{self.url}"
+
+class Preference(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    gender = models.CharField(max_length=1, choices=GENDER)
+    min_age = models.PositiveIntegerField()
+    max_age = models.PositiveIntegerField()

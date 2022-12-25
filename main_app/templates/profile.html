@@ -2,5 +2,17 @@
 {% block content %}
 
 <h1>Profile</h1>
+{% for photo in profile.photo_set.all %}
+<img class="responsive-img card-panel" src="{{photo.url}}">
+{% empty %}
+<div class="card-panel teal-text center-align">No Photos Uploaded</div>
+{% endfor %}
+{% comment %} 
+<form action="{% url 'add_photo' %}" enctype="multipart/form-data" method="POST" alt="Profile Picture" class="card-panel">
+    {% csrf_token %}
+    <input type="file" name="photo-file">
+    <br><br>
+    <input type="submit" class="btn" value="Upload Photo">
+</form> {% endcomment %}
 
 {% endblock %}
