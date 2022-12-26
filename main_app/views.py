@@ -92,4 +92,4 @@ def add_photo(request, profile_id):
         except Exception as e:
             print('An error occurred uploading file to S3')
             print(e)
-    return redirect('detail', profile_id=profile_id)
+    return redirect('/profile/' + str(profile_id), profile_id=profile_id)

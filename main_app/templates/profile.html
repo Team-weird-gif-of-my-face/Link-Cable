@@ -10,7 +10,8 @@
         {% empty %}
         <div class="card-panel teal-text center-align">No Photos Uploaded</div>
         {% endfor %}
-        <form action="{% url 'add_photo' %}" enctype="multipart/form-data" method="POST" alt="Profile Picture" class="card-panel">
+
+       <form action="{% url 'add_photo' profile.id %}" enctype="multipart/form-data" method="POST" alt="Profile Picture" class="card-panel">
             {% csrf_token %}
             <input type="file" name="photo-file">
             <br><br>
@@ -19,7 +20,8 @@
 
         <div class="card">
             <div class="card-content">
-                <span class="card-title">Display Name: {{ profile.display_name }}</span>
+                <span class="card-title">Profile</span>
+                <p>Display Name: {{ profile.display_name }}</p>
                 <p>Full name: {{ profile.first_name }} {{ profile.last_name }}</p>
                 <p>Age: {{ profile.age }}</p>
                 <p>Gender: 
@@ -34,7 +36,7 @@
                 <p>Bio: {{ profile.bio }}</p>
             </div>
             <div class="card-action">
-                {% comment %} <a href="{% url 'profile_update' profile.id %}">Edit</a> {% endcomment %}
+                <a href="">Edit Profile</a>
             </div>
         </div>
 
@@ -55,7 +57,7 @@
                 <p>Age Range: {{ preference.min_age }} - {{ preference.max_age }}</p>
                 </div>
                 <div class="card-action">
-                    <a href="{% url 'add_preference' profile_id=user.profile.id %}">Edit Preference</a>
+                    <a href="{% url 'add_preference' profile_id=profile.id %}">Edit Preference</a>
                 </div>
                 {% endif %}
                 {% endfor %}
@@ -63,7 +65,7 @@
                 <div class="card-panel teal-text center-align">No Preference added</div>
             </div>
             <div class="card-action">
-                <a href="{% url 'add_preference' profile_id=user.profile.id %}">Add Preference</a>
+                <a href="{% url 'add_preference' profile_id=profile.id %}">Add Preference</a>
             </div>
             {% endif %}
         </div>
