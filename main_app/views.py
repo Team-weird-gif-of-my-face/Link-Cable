@@ -52,7 +52,7 @@ def create_profile(request):
         profile = form.save(commit=False)
         profile.user = request.user
         profile.save()
-        return redirect('add_preference', profile_id=profile.pk)
+        return redirect('/profile/' + str(profile.id) + '/add_preference')
       else:
         error_message = 'Invalid profile - try again'
     form = ProfileForm()
@@ -60,33 +60,36 @@ def create_profile(request):
     return render(request, 'registration/create_profile.html', context)
 
 @login_required
-def add_preference(request):
+def add_preference(request, profile_id):
   error_message = ''
+  profile = request.user.profile
   if request.method == 'POST':
       form = PreferenceForm(request.POST)
       if form.is_valid():
         preference = form.save(commit=False)
-        preference.profile = request.profile
+        preference.profile = profile
         preference.save()
-        return redirect('home')
+        return redirect('/profile/' + str(profile.id))
       else:
         error_message = 'Invalid preference - try again'
         form = PreferenceForm()
-        context = {'form': form, 'error_message': error_message}
-        return render(request, 'registration/add_preference.html', context)
+  else:
+      form = PreferenceForm()
+  context = {'form': form, 'error_message': error_message}
+  return render(request, 'registration/add_preference.html', context)
 
 
-# def add_photo(request, profile_id):
-#     photo_file = request.FILES.get('photo-file', None)
-#     if photo_file:
-#         s3 = boto3.client('s3')
-#         key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
-#         try:
-#             bucket = os.environ['S3_BUCKET']
-#             s3.upload_fileobj(photo_file, bucket, key)
-#             url = f"{os.environ['S3_BASE_URL']}{bucket}/{key}"
-#             Photo.objects.create(url=url, profile_id=profile_id)
-#         except Exception as e:
-#             print('An error occurred uploading file to S3')
-#             print(e)
-#     return redirect('detail', profile_id=profile_id)
+def add_photo(request, profile_id):
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3')
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        try:
+            bucket = os.environ['S3_BUCKET']
+            s3.upload_fileobj(photo_file, bucket, key)
+            url = f"{os.environ['S3_BASE_URL']}{bucket}/{key}"
+            Photo.objects.create(url=url, profile_id=profile_id)
+        except Exception as e:
+            print('An error occurred uploading file to S3')
+            print(e)
+    return redirect('detail', profile_id=profile_id)

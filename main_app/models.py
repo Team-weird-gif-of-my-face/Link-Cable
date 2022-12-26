@@ -8,6 +8,12 @@ GENDER = (
   ('O', 'Other'),
 )
 
+INTEREST = (
+  ('M', 'Men'),
+  ('W', 'Women'),
+  ('O', 'Other'),
+)
+
 class Game(models.Model):
     name = models.CharField(max_length=255)
     platform = models.CharField(max_length=50)
@@ -39,7 +45,7 @@ class Preference(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     gender = models.CharField(
         max_length=1,
-        choices=GENDER)
+        choices=INTEREST)
     min_age = models.PositiveIntegerField()
     max_age = models.PositiveIntegerField()
 
