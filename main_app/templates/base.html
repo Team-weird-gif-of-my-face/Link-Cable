@@ -27,7 +27,7 @@
           {% if not user.profile %}
           <li><a class="black-text" href="{% url 'create_profile' %}">Create Profile</a></li>
         {% else %}
-          <li><a class="black-text" href="{% url 'profile' profile_id=user.profile.id %}">Profile</a></li>
+          <li><a class="black-text" href="{% url 'profile_index' profile_id=user.profile.id %}">Profile</a></li>
         {% endif %}
             <li>Hello {{ user.profile.first_name }}! </li>
             <li><a href="{% url 'logout' %}">Log Out</a></li>

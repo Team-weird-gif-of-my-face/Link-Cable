@@ -4,9 +4,11 @@ import boto3
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import CreateView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
-from .forms import ProfileForm, PreferenceForm
-from .models import Profile, Photo, User
+from .forms import PreferenceForm
+from .models import Profile, Photo, Preference
 
 # Create your views here.
 
@@ -16,14 +18,17 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+
 @login_required
 def connect(request):
     return render(request, 'connect.html')
 
+
 @login_required
-def profile(request, profile_id):
+def profile_index(request, profile_id):
   profile = Profile.objects.get(id=profile_id)
-  return render(request, 'profile.html', {'profile': profile})
+  return render(request, 'profile/index.html', {'profile': profile})
+
 
 def signup(request):
   error_message = ''
@@ -39,29 +44,49 @@ def signup(request):
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
 
-@login_required
-def create_profile(request):
-  error_message = ''
-  try:
-    request.user.profile
-    return redirect('home')
-  except Profile.DoesNotExist:
-    if request.method == 'POST':
-      form = ProfileForm(request.POST)
-      if form.is_valid():
-        profile = form.save(commit=False)
-        profile.user = request.user
-        profile.save()
-        return redirect('/profile/' + str(profile.id) + '/add_preference')
-      else:
-        error_message = 'Invalid profile - try again'
-    form = ProfileForm()
-    context = {'form': form, 'error_message': error_message}
-    return render(request, 'registration/create_profile.html', context)
+
+class ProfileCreate(LoginRequiredMixin, CreateView):
+  model = Profile
+  fields = ['display_name', 'first_name', 'last_name', 'age', 'gender', 'bio']
+  success_url = ''
+
+  def dispatch(self, request, *args, **kwargs):
+    if Profile.objects.filter(user=request.user).exists():
+      return redirect('/')
+    return super().dispatch(request, *args, **kwargs)
+
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    return super().form_valid(form)
+
+  def get_success_url(self):
+    profile_id = self.object.id
+    return f'/profile/{profile_id}/add_preference'
+
+
+class ProfileUpdate(LoginRequiredMixin, UpdateView):
+  model = Profile
+  fields = ['display_name', 'bio']
+  
+  def get_success_url(self):
+    profile_id = self.object.id
+    return f'/profile/{profile_id}'
+
+
+class PreferenceUpdate(LoginRequiredMixin, UpdateView):
+  model = Preference
+  fields = ['interest', 'min_age', 'max_age'] 
+
+  def get_success_url(self):
+    profile_id = self.object.profile_id
+    return f'/profile/{profile_id}'
+
 
 @login_required
-def add_preference(request, profile_id):
+def add_preference(request):
   error_message = ''
+  if Preference.objects.filter(profile=request.user.profile).exists():
+    return redirect('/')
   profile = request.user.profile
   if request.method == 'POST':
       form = PreferenceForm(request.POST)
@@ -76,7 +101,7 @@ def add_preference(request, profile_id):
   else:
       form = PreferenceForm()
   context = {'form': form, 'error_message': error_message}
-  return render(request, 'registration/add_preference.html', context)
+  return render(request, 'profile/add_preference.html', context)
 
 
 def add_photo(request, profile_id):
@@ -93,3 +118,28 @@ def add_photo(request, profile_id):
             print('An error occurred uploading file to S3')
             print(e)
     return redirect('/profile/' + str(profile_id), profile_id=profile_id)
+
+
+# if we want to work with function based instead of class based components
+
+# @login_required
+# def create_profile(request):
+#   error_message = ''
+#   try:
+#     request.user.profile
+#     return redirect('home')
+#   except Profile.DoesNotExist:
+#     if request.method == 'POST':
+#       form = ProfileForm(request.POST)
+#       if form.is_valid():
+#         profile = form.save(commit=False)
+#         profile.user = request.user
+#         profile.save()
+#         return redirect('/profile/' + str(profile.id) + '/add_preference')
+#       else:
+#         error_message = 'Invalid profile - try again'
+#     form = ProfileForm()
+#     context = {'form': form, 'error_message': error_message}
+#     return render(request, 'profile/create_profile.html', context)
+
+

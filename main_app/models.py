@@ -36,14 +36,14 @@ class Profile(models.Model):
 
 class Preference(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    gender = models.CharField(
+    interest = models.CharField(
         max_length=1,
         choices=INTEREST)
     min_age = models.PositiveIntegerField()
     max_age = models.PositiveIntegerField()
 
     def get_absolute_url(self):
-        return reverse('preference', kwargs={'preference_id': self.pk})
+        return reverse('preference', kwargs={'preference_id': self.id})
 
 class Photo(models.Model):
     url = models.CharField(max_length=200)

@@ -6,15 +6,16 @@ body {
     background-color: black; */
   }
   
-  main {
+main {
     flex: 1 0 auto;
-  }
+}
   
-  footer.page-footer {
+footer.page-footer {
     padding-top: 0;
     text-align: right;
-  }
+}
   
-  .logo-image {
-    margin-top: 13px;
-  }
+.profile-picture {
+  width: 200px;
+  height: 200px;
+}
