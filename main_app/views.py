@@ -83,7 +83,7 @@ class PreferenceUpdate(LoginRequiredMixin, UpdateView):
 
 
 @login_required
-def add_preference(request):
+def add_preference(request, profile_id):
   error_message = ''
   if Preference.objects.filter(profile=request.user.profile).exists():
     return redirect('/')
@@ -106,6 +106,7 @@ def add_preference(request):
 
 def add_photo(request, profile_id):
     photo_file = request.FILES.get('photo-file', None)
+    caption = request.POST.get('caption', '')
     if photo_file:
         s3 = boto3.client('s3')
         key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
@@ -113,7 +114,7 @@ def add_photo(request, profile_id):
             bucket = os.environ['S3_BUCKET']
             s3.upload_fileobj(photo_file, bucket, key)
             url = f"{os.environ['S3_BASE_URL']}{bucket}/{key}"
-            Photo.objects.create(url=url, profile_id=profile_id)
+            Photo.objects.create(url=url, caption=caption, profile_id=profile_id)
         except Exception as e:
             print('An error occurred uploading file to S3')
             print(e)

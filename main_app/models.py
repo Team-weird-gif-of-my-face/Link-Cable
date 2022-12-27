@@ -3,21 +3,35 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 GENDER = (
-  ('M', 'Male'),
-  ('F', 'Female'),
-  ('O', 'Other'),
+    ('M', 'Male'),
+    ('F', 'Female'),
+    ('O', 'Other'),
 )
 
 INTEREST = (
-  ('M', 'Men'),
-  ('W', 'Women'),
-  ('O', 'Other'),
+    ('M', 'Men'),
+    ('W', 'Women'),
+    ('O', 'Other'),
+)
+
+PLATFORM = (
+    ('C', 'Console'),
+    ('P', 'PC'),
+)
+
+GENRE = (
+
 )
 
 class Game(models.Model):
-    name = models.CharField(max_length=255)
-    platform = models.CharField(max_length=50)
-    game_genre = models.CharField(max_length=100)
+    game = models.CharField(max_length=100)
+    platform = models.CharField(
+        max_length=1,
+        choices=PLATFORM)
+    system = models.CharField(max_length=100)
+    game_genre = models.CharField(
+        max_length=1,
+        choices=GENRE)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -48,6 +62,7 @@ class Preference(models.Model):
 class Photo(models.Model):
     url = models.CharField(max_length=200)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    caption = models.CharField(max_length=250, blank=True)
 
     def __str__(self):
         return f"Photo for profile_id: {self.profile_id} @{self.url}"
