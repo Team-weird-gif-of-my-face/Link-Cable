@@ -47,7 +47,7 @@ def signup(request):
 
 class ProfileCreate(LoginRequiredMixin, CreateView):
   model = Profile
-  fields = ['display_name', 'first_name', 'last_name', 'age', 'gender', 'bio']
+  fields = ['display_name', 'first_name', 'last_name', 'age', 'gender', 'bio', 'favorite_genre']
   success_url = ''
 
   def dispatch(self, request, *args, **kwargs):
