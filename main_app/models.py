@@ -18,7 +18,8 @@ INTEREST = (
 )
 
 PLATFORM = (
-    ('C', 'Console'),
+    ('X', 'Xbox'),
+    ('S', 'Playstation'),
     ('P', 'PC'),
 )
 
@@ -49,10 +50,9 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25)
     age = models.PositiveIntegerField()
-    gender = models.CharField(
-        max_length=1,
-        choices=GENDER)
+    gender = models.CharField(max_length=1,choices=GENDER)
     bio = models.TextField(blank=True)
+    favorite_genre = models.CharField(max_length=1,choices=GENRE, default=GENRE[0][0])
     favorite_games = models.ManyToManyField(Game)
 
     def get_absolute_url(self):
