@@ -7,6 +7,10 @@
     <div class="col s6">
         {% for photo in profile.photo_set.all %}
         <img class="responsive-img profile-picture" src="{{photo.url}}">
+        <div class="card-action">
+        <a href="">Edit caption</a>
+        <a href="{% url 'photo_delete' photo.id %}">Delete image</a>
+        </div>
         <p>{{photo.caption}}</p>
         {% empty %}
         <div class="card-panel teal-text center-align">No Photos Uploaded</div>

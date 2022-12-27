@@ -4,7 +4,7 @@ import boto3
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from .forms import PreferenceForm
@@ -67,6 +67,7 @@ class ProfileCreate(LoginRequiredMixin, CreateView):
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
   model = Profile
   fields = ['display_name', 'bio']
+  success_url = ''
   
   def get_success_url(self):
     profile_id = self.object.id
@@ -77,6 +78,15 @@ class PreferenceUpdate(LoginRequiredMixin, UpdateView):
   model = Preference
   fields = ['interest', 'min_age', 'max_age'] 
 
+  def get_success_url(self):
+    profile_id = self.object.profile_id
+    return f'/profile/{profile_id}'
+
+
+class PhotoDelete(LoginRequiredMixin, DeleteView):
+  model = Photo
+  success_url = ''
+  
   def get_success_url(self):
     profile_id = self.object.profile_id
     return f'/profile/{profile_id}'
