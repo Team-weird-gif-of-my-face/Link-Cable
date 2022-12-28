@@ -32,7 +32,6 @@ AGE = (
 )
 
 GENRE = (
-<<<<<<< HEAD
     ('ADV', 'Adventure'),
     ('ACT', 'Action'),
     ('IND', 'Indie'),
@@ -41,14 +40,6 @@ GENRE = (
     ('SIM', 'Simulators'),
     ('SPO', 'Sports and Racing'),
     ('STR', 'Strategy and Puzzles')
-=======
-    ('A', 'Action'),
-    ('R', 'Role-Playing'),
-    ('S', 'Strategy'),
-    ('D', 'Adventure'),
-    ('I', 'Simulation'),
-    ('C', 'Sports & Racing'),
->>>>>>> refs/remotes/origin/mike-models
 )
 
 class Game(models.Model):
