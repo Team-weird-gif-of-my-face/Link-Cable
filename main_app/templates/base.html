@@ -25,7 +25,7 @@
           <li><a class="black-text" href="{% url 'about' %}">About Us</a></li>
           {% if user.is_authenticated %}
           {% if not user.profile %}
-          <li><a class="black-text" href="{% url 'create_profile' %}">Create Profile</a></li>
+          <li><a class="black-text" href="{% url 'profile_create' %}">Create Profile</a></li>
         {% else %}
           <li><a class="black-text" href="{% url 'profile_index' profile_id=user.profile.id %}">Profile</a></li>
         {% endif %}
@@ -71,7 +71,7 @@
     </script>
     {% endblock %}
   </main>
-  <footer class="page-footer grey">
+  <footer class="page-footer grey" style="position: fixed; bottom: 0; width: 100%;">
     <div class="right">All Rights Reserved, &copy; 2022 Team Owen &nbsp;</div>
   </footer>
 </body>
