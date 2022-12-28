@@ -5,13 +5,16 @@ from django.urls import reverse
 GENDER = (
     ('M', 'Male'),
     ('F', 'Female'),
-    ('O', 'Other'),
+    ('T', 'Transgender'),
+    ('N', 'Non-Binary'),
+    ('P', 'Prefer not to say')
 )
 
 INTEREST = (
     ('M', 'Men'),
     ('W', 'Women'),
-    ('O', 'Other'),
+    ('T', 'Trans'),
+    ('A', 'All')
 )
 
 PLATFORM = (
@@ -20,7 +23,14 @@ PLATFORM = (
 )
 
 GENRE = (
-
+    ('ADV', 'Adventure'),
+    ('ACT', 'Action'),
+    ('IND', 'Indie'),
+    ('RPG', 'Role Playing Games'),
+    ('SHO', 'Shooting and Combat Games'),
+    ('SIM', 'Simulators'),
+    ('SPO', 'Sports and Racing'),
+    ('STR', 'Strategy and Puzzles')
 )
 
 class Game(models.Model):
@@ -30,7 +40,7 @@ class Game(models.Model):
         choices=PLATFORM)
     system = models.CharField(max_length=100)
     game_genre = models.CharField(
-        max_length=1,
+        max_length=3,
         choices=GENRE)
 
 class Profile(models.Model):
