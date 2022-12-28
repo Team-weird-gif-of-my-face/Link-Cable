@@ -60,7 +60,7 @@ class Profile(models.Model):
     age = models.PositiveIntegerField()
     gender = models.CharField(max_length=1,choices=GENDER)
     bio = models.TextField(blank=True)
-    favorite_genre = models.CharField(max_length=1,choices=GENRE, default=GENRE[0][0])
+    favorite_genre = models.CharField(max_length=3,choices=GENRE, default=GENRE[0][0])
     favorite_games = models.ManyToManyField(Game)
 
     def get_absolute_url(self):

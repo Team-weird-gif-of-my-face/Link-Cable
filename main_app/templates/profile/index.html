@@ -4,31 +4,29 @@
 <h1>Profile</h1>
 
 
-    <div class="col s6">
-        {% for photo in profile.photo_set.all %}
-        <img class="responsive-img profile-picture" src="{{photo.url}}">
-        <div class="card-action">
-        <a href="">Edit caption</a>
-        <a href="{% url 'photo_delete' photo.id %}">Delete image</a>
-        </div>
-        <p>{{photo.caption}}</p>
-        </div>
-        {% empty %}
-        <div class="card-panel teal-text center-align">No Photos Uploaded</div>
-        {% endfor %}
+<div class="col s6">
+    {% for photo in profile.photo_set.all %}
+    <div class="card-panel teal-text center-align">
+    <a href="/photo/{{ photo.id }}">
+    <img class="responsive-img profile-picture" src="{{photo.url}}"></a>
+    <p>{{photo.caption}}</p>
+    </div>
+    {% empty %}
+    <div class="card-panel teal-text center-align">No Photos Uploaded</div>
+    {% endfor %}
 
-        {% if user.is_authenticated %} 
-        {% if user.id == profile.user_id %}
-    <form action="{% url 'add_photo' profile.id %}" enctype="multipart/form-data" method="POST" alt="Profile Picture" class="card-panel">
-            {% csrf_token %}
-            <input type="file" name="photo-file">
-            <br><br>
-            Caption:<input type="text" name="caption">
-            <br><br>
-            <input type="submit" class="btn" value="Upload Photo">
-        </form>
-        {% endif %} 
-        {% endif %}
+    {% if user.is_authenticated %} 
+    {% if user.id == profile.user_id %}
+<form action="{% url 'add_photo' profile.id %}" enctype="multipart/form-data" method="POST" alt="Profile Picture" class="card-panel">
+        {% csrf_token %}
+        <input type="file" name="photo-file">
+        <br><br>
+        Caption:<input type="text" name="caption">
+        <br><br>
+        <input type="submit" class="btn" value="Upload Photo">
+    </form>
+    {% endif %} 
+    {% endif %}
         
         <div class="card">
             <div class="card-content">
