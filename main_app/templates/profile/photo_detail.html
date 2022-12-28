@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Photo Details</h1>
+
+{%if photo.url %}
+<div class="card">
+  <div class="card-content">
+    <img class="responsive-img card-panel" src="{{photo.url}}" />
+    <span class="card-title">{{ photo.caption }}</span>
+  </div>
+  {% if user.is_authenticated %} 
+    {% if user_id == profile.user_id %}
+  <div class="card-action">
+    <a href="{% url 'photo_update' photo.id %}">Edit caption</a>
+    <a href="{% url 'photo_delete' photo.id %}">Delete image</a>
+  </div>
+    {% endif %} 
+  {% endif %}
+</div>
+
+{%endif%} {% endblock %}

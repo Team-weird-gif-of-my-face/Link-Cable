@@ -22,6 +22,14 @@ PLATFORM = (
     ('P', 'PC'),
 )
 
+AGE = (
+    ('R1', '18-24'),
+    ('R2', '25-34'),
+    ('R3', '35-44'),
+    ('R4', '45-54'),
+    ('R5', '55+'),
+)
+
 GENRE = (
     ('ADV', 'Adventure'),
     ('ACT', 'Action'),
@@ -63,8 +71,9 @@ class Preference(models.Model):
     interest = models.CharField(
         max_length=1,
         choices=INTEREST)
-    min_age = models.PositiveIntegerField()
-    max_age = models.PositiveIntegerField()
+    age_range = models.CharField(
+        max_length=2,
+        choices=AGE)
 
     def get_absolute_url(self):
         return reverse('preference', kwargs={'preference_id': self.id})
@@ -76,3 +85,6 @@ class Photo(models.Model):
 
     def __str__(self):
         return f"Photo for profile_id: {self.profile_id} @{self.url}"
+
+    def get_absolute_url(self):
+        return reverse('photo', kwargs={'photo_id': self.id})

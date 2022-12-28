@@ -4,7 +4,7 @@ import boto3
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from .forms import PreferenceForm
@@ -37,7 +37,7 @@ def signup(request):
     if form.is_valid():
       user = form.save()
       login(request, user)
-      return redirect('create_profile')
+      return redirect('profile_create')
     else:
       error_message = 'Invalid sign up - try again'
   form = UserCreationForm()
@@ -67,41 +67,47 @@ class ProfileCreate(LoginRequiredMixin, CreateView):
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
   model = Profile
   fields = ['display_name', 'bio']
+  success_url = ''
   
   def get_success_url(self):
     profile_id = self.object.id
     return f'/profile/{profile_id}'
 
-
-class PreferenceUpdate(LoginRequiredMixin, UpdateView):
+class PreferenceCreate(LoginRequiredMixin, CreateView):
   model = Preference
-  fields = ['interest', 'min_age', 'max_age'] 
+  fields = ['interest', 'age_range']
+  success_url=''
+
+  def dispatch(self, request, *args, **kwargs):
+    if Preference.objects.filter(profile=request.user.profile).exists():
+      return redirect('/')
+    return super().dispatch(request, *args, **kwargs)
+
+  def form_valid(self, form):
+    form.instance.profile_id = self.request.user.profile.id
+    return super().form_valid(form)
 
   def get_success_url(self):
     profile_id = self.object.profile_id
     return f'/profile/{profile_id}'
 
 
-@login_required
-def add_preference(request, profile_id):
-  error_message = ''
-  if Preference.objects.filter(profile=request.user.profile).exists():
-    return redirect('/')
-  profile = request.user.profile
-  if request.method == 'POST':
-      form = PreferenceForm(request.POST)
-      if form.is_valid():
-        preference = form.save(commit=False)
-        preference.profile = profile
-        preference.save()
-        return redirect('/profile/' + str(profile.id))
-      else:
-        error_message = 'Invalid preference - try again'
-        form = PreferenceForm()
-  else:
-      form = PreferenceForm()
-  context = {'form': form, 'error_message': error_message}
-  return render(request, 'profile/add_preference.html', context)
+class PreferenceUpdate(LoginRequiredMixin, UpdateView):
+  model = Preference
+  fields = ['interest', 'age_range'] 
+
+  def get_success_url(self):
+    profile_id = self.object.profile_id
+    return f'/profile/{profile_id}'
+
+
+class PhotoDelete(LoginRequiredMixin, DeleteView):
+  model = Photo
+  success_url = ''
+  
+  def get_success_url(self):
+    profile_id = self.object.profile_id
+    return f'/profile/{profile_id}'
 
 
 def add_photo(request, profile_id):
@@ -119,6 +125,18 @@ def add_photo(request, profile_id):
             print('An error occurred uploading file to S3')
             print(e)
     return redirect('/profile/' + str(profile_id), profile_id=profile_id)
+
+def photo_detail(request, photo_id):
+  photo = Photo.objects.get(id=photo_id)
+  return render(request, 'profile/photo_detail.html', {'photo': photo})
+
+class PhotoUpdate(UpdateView):
+  model = Photo
+  fields = ['caption']
+
+  def get_success_url(self):
+    photo_id = self.object.id
+    return f'/photo/{photo_id}'
 
 
 # if we want to work with function based instead of class based components
@@ -144,3 +162,23 @@ def add_photo(request, profile_id):
 #     return render(request, 'profile/create_profile.html', context)
 
 
+# @login_required
+# def add_preference(request, profile_id):
+#   error_message = ''
+#   if Preference.objects.filter(profile=request.user.profile).exists():
+#     return redirect('/')
+#   profile = request.user.profile
+#   if request.method == 'POST':
+#       form = PreferenceForm(request.POST)
+#       if form.is_valid():
+#         preference = form.save(commit=False)
+#         preference.profile = profile
+#         preference.save()
+#         return redirect('/profile/' + str(profile.id))
+#       else:
+#         error_message = 'Invalid preference - try again'
+#         form = PreferenceForm()
+#   else:
+#       form = PreferenceForm()
+#   context = {'form': form, 'error_message': error_message}
+#   return render(request, 'profile/add_preference.html', context)
