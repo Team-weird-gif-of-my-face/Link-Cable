@@ -47,7 +47,7 @@ def signup(request):
 
 class ProfileCreate(LoginRequiredMixin, CreateView):
   model = Profile
-  fields = ['display_name', 'first_name', 'last_name', 'age', 'gender', 'bio']
+  fields = ['display_name', 'first_name', 'last_name', 'age', 'gender', 'bio', 'favorite_genre']
   success_url = ''
 
   def dispatch(self, request, *args, **kwargs):
@@ -66,7 +66,7 @@ class ProfileCreate(LoginRequiredMixin, CreateView):
 
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
   model = Profile
-  fields = ['display_name', 'bio']
+  fields = ['display_name', 'bio', 'favorite_genre']
   success_url = ''
   
   def get_success_url(self):
@@ -108,6 +108,28 @@ class PhotoDelete(LoginRequiredMixin, DeleteView):
   def get_success_url(self):
     profile_id = self.object.profile_id
     return f'/profile/{profile_id}'
+
+
+@login_required
+def add_preference(request, profile_id):
+  error_message = ''
+  if Preference.objects.filter(profile=request.user.profile).exists():
+    return redirect('/')
+  profile = request.user.profile
+  if request.method == 'POST':
+      form = PreferenceForm(request.POST)
+      if form.is_valid():
+        preference = form.save(commit=False)
+        preference.profile = profile
+        preference.save()
+        return redirect('/profile/' + str(profile.id))
+      else:
+        error_message = 'Invalid preference - try again'
+        form = PreferenceForm()
+  else:
+      form = PreferenceForm()
+  context = {'form': form, 'error_message': error_message}
+  return render(request, 'profile/add_preference.html', context)
 
 
 def add_photo(request, profile_id):
