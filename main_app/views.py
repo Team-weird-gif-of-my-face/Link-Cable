@@ -66,7 +66,7 @@ class ProfileCreate(LoginRequiredMixin, CreateView):
 
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
   model = Profile
-  fields = ['display_name', 'bio']
+  fields = ['display_name', 'bio', 'favorite_genre']
   success_url = ''
   
   def get_success_url(self):
