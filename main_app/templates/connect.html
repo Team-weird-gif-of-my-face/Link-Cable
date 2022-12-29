@@ -3,5 +3,10 @@
 
 <h1>Connect</h1>
 
+{% for profile in profiles %}
+    <p>{{ profile.display_name }}</p>
+    <p>{{ profile.first_name }}</p>
+    <p>{{ profile.favorite_genre }}</p>
+{% endfor %}
 
 {% endblock %}
