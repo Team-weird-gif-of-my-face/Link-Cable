@@ -25,34 +25,6 @@ def connect(request):
   profiles = Profile.objects.exclude(user=request.user)
   return render(request, 'connect.html', {'profiles': profiles})
 
-# def filter_age(request, template_name="filter_result.html"):
-#   profiles = Profile.objects.exclude(user=request.user)
-
-
-# def connect_view(request):
-#     profiles = Profile.objects.exclude(user=request.user)
-
-#     age_range = request.GET.get('age_range')
-#     gender = request.GET.get('gender')
-#     favorite_genre = request.GET.get('favorite_genre')
-
-#     if age_range:
-#         profiles = profiles.filter(age__range=age_range.split('-'))
-#     if gender:
-#         profiles = profiles.filter(gender=gender)
-#     if favorite_genre:
-#         profiles = profiles.filter(favorite_genre=favorite_genre)
-
-#     return render(request, 'connect.html', {'profiles': profiles})
-
-
-class SearchResultsView(ListView):
-    model = Profile
-    template_name = 'connect.html'
-
-    def get_queryset(self):
-        return Profile.objects.filter(gender__icontains='Male')
-
 
 @login_required
 def profile_index(request, profile_id):
