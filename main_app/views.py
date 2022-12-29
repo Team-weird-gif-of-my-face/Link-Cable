@@ -22,11 +22,8 @@ def about(request):
 
 @login_required
 def connect(request):
-    profiles = Profile.objects.exclude(user=request.user)
-    return render(request, 'connect.html', {'profiles': profiles})
-
-def filter_age(request, template_name="filter_result.html"):
   profiles = Profile.objects.exclude(user=request.user)
+  return render(request, 'connect.html', {'profiles': profiles})
 
 
 @login_required
