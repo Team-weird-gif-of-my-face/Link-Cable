@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<h1>Add Games</h1>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+  </table>
+  <input type="submit" value="Save" class="btn">
+</form>
+
+{% for game in games %}
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">{{ game.name }}</span>
+            <p>Platform: {{ game.platform }}</p>
+        </div>
+    </div>
+{% endfor %}
+
+<script>
+    const selectEl = document.getElementById('id_platform');
+    M.FormSelect.init(selectEl);
+    const selectGen = document.getElementById('id_game_genre')
+    M.FormSelect.init(selectGen)
+  </script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Connect</h1>
+<select value='age_range'>
+    <option value='18-24'>18-24</option>
+</select>
+{% for profile in profiles %}
+<div class="card">
+<div class="card-content">
+{% for photo in profile.photo_set.all %}
+<img class="responsive-img match-profile-picture" src="{{ photo.url }}" style="float: left">
+{% endfor %}
+<p>First name: {{ profile.first_name }}</p>
+<p>Age: {{ profile.age }}</p>
+<p>Bio: {{ profile.bio }}</p>
+<p><a href="{% url 'profile_index' profile_id=profile.id %}">View Profile</a></p>
+</div>
+</div>
+{% endfor %}
+<script>
+    const selectEl = document.getElementById('id_gender');
+    M.FormSelect.init(selectEl);
+    const selectGen = document.getElementById('id_favorite_genre')
+    M.FormSelect.init(selectGen)
+  </script>
+{% endblock %}

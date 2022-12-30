@@ -43,14 +43,16 @@ GENRE = (
 )
 
 class Game(models.Model):
-    game = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     platform = models.CharField(
         max_length=1,
-        choices=PLATFORM)
-    system = models.CharField(max_length=100)
+        choices=PLATFORM,
+        default=PLATFORM[0][0])
     game_genre = models.CharField(
         max_length=3,
-        choices=GENRE)
+        choices=GENRE,
+        default=GENRE[0][0])
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -66,6 +68,7 @@ class Profile(models.Model):
     def get_absolute_url(self):
         return reverse('profile', kwargs={'profile_id': self.id})
 
+
 class Preference(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     interest = models.CharField(
@@ -77,6 +80,7 @@ class Preference(models.Model):
 
     def get_absolute_url(self):
         return reverse('preference', kwargs={'preference_id': self.id})
+
 
 class Photo(models.Model):
     url = models.CharField(max_length=200)
