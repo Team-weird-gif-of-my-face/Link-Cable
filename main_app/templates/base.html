@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Link Cable</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body>
+  <header class="navbar-fixed">
+    <nav>
+      <div class="navbar nav-wrapper grey">
+        <ul>
+          <li>
+            <a href="{% url 'home' %}" class="brand-logo"><i class="material-icons black-text">&nbsp;&nbsp;games</i>Link Cable</a>
+          </li>
+        </ul>
+
+<ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a class="black-text" href="{% url 'home' %}">Home</a></li>
+          <li><a class="black-text" href="{% url 'connect' %}">Let's Connect!</a></li>
+          <li><a class="black-text" href="{% url 'about' %}">About Us</a></li>
+          {% if user.is_authenticated %}
+          {% if not user.profile %}
+          <li><a class="black-text" href="{% url 'profile_create' %}">Create Profile</a></li>
+        {% else %}
+          <li><a class="black-text" href="{% url 'profile_index' profile_id=user.profile.id %}">Profile</a></li>
+        {% endif %}
+            <li>Hello {{ user.profile.first_name }}! </li>
+            <li><a href="{% url 'logout' %}">Log Out</a></li>
+          {% else %}
+          <li><a href="{% url 'signup' %}">Sign Up</a></li>
+          <li><a href="{% url 'login' %}">Log In</a></li>
+          {% endif %}
+          </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    {% block content %}
+    {% endblock %}
+  </main>
+  <footer class="page-footer grey" style="position: fixed; bottom: 0; width: 100%;">
+    <div class="right">All Rights Reserved, &copy; 2022 Team Owen &nbsp;</div>
+  </footer>
+</body>
+</html>

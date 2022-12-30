@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Connect</h1>
+<form action="" method=GET>
+<label>Age range
+<select value='age_range' id='id_age_range'>
+    <option value=''></option>
+    <option value='18-24'>18-24</option>
+    <option value='25-34'>25-34</option>
+    <option value='35-44'>35-44</option>
+    <option value='45-54'>45-54</option>
+    <option value='55+'>55+</option>
+</select></label>
+<button type='submit'>Filter</button
+</form>
+<br>
+<form action="" method=GET>
+<label>Interest
+<select value='interest' id='id_interest'>
+    <option value=''></option>
+    <option value='Men'>Men</option>
+    <option value='Women'>Women</option>
+    <option value='Trans'>Transgender</option>
+    <option value='Non-Binary'>Non-Binary</option>
+    <option value='Prefer not to say'>Prefer not to say</option>
+</select></label>
+<button type='submit'>Filter</button
+</form>
+<br>
+<form action="" method=GET>
+<label>Game Genre
+<select value='favorite_genre' id='id_favorite_genre'>
+    <option value=''></option>
+    <option value='Adventure'>Adventure</option>
+    <option value='Action'>Action</option>
+    <option value='Indie'>Indie</option>
+    <option value='Role Playing Games'>Role Playing Games</option>
+    <option value='Shooting and Combat Games'>Shooting and Combat Games</option>
+    <option value='Simulators'>Simulators</option>
+    <option value='Sports and Racing'>Sports and Racing</option>
+    <option value='Strategy and Puzzles'>Strategy and Puzzles</option>
+</select></label>
+<button type='submit'>Filter</button
+</form>
+
+{% for profile in profiles %}
+<div class="card">
+<div class="card-content">
+{% for photo in profile.photo_set.all %}
+<img class="responsive-img match-profile-picture" src="{{ photo.url }}" style="float: left">
+{% endfor %}
+<p>First name: {{ profile.first_name }}</p>
+<p>Age: {{ profile.age }}</p>
+<p>Bio: {{ profile.bio }}</p>
+<p><a href="{% url 'profile_index' profile_id=profile.id %}">View Profile</a></p>
+</div>
+</div>
+{% endfor %}
+<script>
+    const selectEl = document.getElementById('id_age_range');
+    M.FormSelect.init(selectEl);
+    const selectInt = document.getElementById('id_interest');
+    M.FormSelect.init(selectInt);
+    const selectGen = document.getElementById('id_favorite_genre');
+    M.FormSelect.init(selectGen);
+  </script>
+{% endblock %}
