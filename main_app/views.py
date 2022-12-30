@@ -29,6 +29,23 @@ def filter_age(request, template_name="filter_result.html"):
   profiles = Profile.objects.exclude(user=request.user)
 
 
+def connect_view(request):
+    profiles = Profile.objects.exclude(user=request.user)
+
+    age_range = request.GET.get('age_range')
+    interest = request.GET.get('interest')
+    favorite_genre = request.GET.get('favorite_genre')
+
+    if age_range:
+        profiles = profiles.filter(age__range=age_range.split('-'))
+    if interest:
+        profiles = profiles.filter(preference__interest=interest)
+    if favorite_genre:
+        profiles = profiles.filter(favorite_genre=favorite_genre)
+
+    return render(request, 'connect.html', {'profiles': profiles})
+
+
 @login_required
 def profile_index(request, profile_id):
   profile = Profile.objects.get(id=profile_id)
