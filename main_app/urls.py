@@ -11,6 +11,7 @@ urlpatterns = [
   path('profile/<int:pk>/update/', views.ProfileUpdate.as_view(), name='profile_update'),
   path('profile/<int:pk>/add_preference/', views.PreferenceCreate.as_view(), name='add_preference'),
   path('update_preference/<int:pk>', views.PreferenceUpdate.as_view(), name='preference_update'),
+  path('profile/<int:pk>/add_game/', views.GameCreate.as_view(), name='add_game'),
   path('profile/<int:profile_id>/add_photo/', views.add_photo, name='add_photo'),
   path('photo/<int:photo_id>/', views.photo_detail, name='photo_detail'),
   path('photo/<int:pk>/delete/', views.PhotoDelete.as_view(), name='photo_delete'),

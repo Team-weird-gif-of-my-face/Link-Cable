@@ -9,7 +9,7 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from .forms import PreferenceForm
-from .models import Profile, Photo, Preference
+from .models import Profile, Photo, Preference, Game
 
 # Create your views here.
 
@@ -163,6 +163,15 @@ class PhotoUpdate(UpdateView):
   def get_success_url(self):
     photo_id = self.object.id
     return f'/photo/{photo_id}'
+
+
+class GameCreate(LoginRequiredMixin, CreateView):
+  model = Game
+  fields = ['name', 'platform', 'game_genre']
+
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    return super().form_valid(form)
 
 
 # if we want to work with function based instead of class based components

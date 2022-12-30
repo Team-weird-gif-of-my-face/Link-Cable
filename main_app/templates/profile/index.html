@@ -76,4 +76,18 @@
     </div>
 
 
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Favorite Games</span>
+            {% for game in profile.favorite_games.all %}
+            <p>{{ game.name }}</p>
+            {% endfor %}
+            {% if user.id == profile.user_id %}
+            <div class="card-action">
+                <a href="{% url 'add_game' profile.id %}">Add Game</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
 {% endblock %}
