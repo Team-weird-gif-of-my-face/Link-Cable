@@ -25,8 +25,9 @@ def connect(request):
     profiles = Profile.objects.exclude(user=request.user)
     return render(request, 'connect.html', {'profiles': profiles})
 
-class MatchList(LoginRequiredMixin, ListView):
-  model = Profile
+def filter_age(request, template_name="filter_result.html"):
+  profiles = Profile.objects.exclude(user=request.user)
+
 
 @login_required
 def profile_index(request, profile_id):
