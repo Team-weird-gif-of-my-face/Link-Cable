@@ -5,10 +5,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from .forms import PreferenceForm
-from .models import Profile, Photo, Preference
+from .models import Profile, Photo, Preference, Game
 
 # Create your views here.
 
@@ -21,7 +22,11 @@ def about(request):
 
 @login_required
 def connect(request):
-    return render(request, 'connect.html')
+    profiles = Profile.objects.exclude(user=request.user)
+    return render(request, 'connect.html', {'profiles': profiles})
+
+def filter_age(request, template_name="filter_result.html"):
+  profiles = Profile.objects.exclude(user=request.user)
 
 
 @login_required
@@ -159,6 +164,15 @@ class PhotoUpdate(UpdateView):
   def get_success_url(self):
     photo_id = self.object.id
     return f'/photo/{photo_id}'
+
+
+class GameCreate(LoginRequiredMixin, CreateView):
+  model = Game
+  fields = ['name', 'platform', 'game_genre']
+
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    return super().form_valid(form)
 
 
 # if we want to work with function based instead of class based components

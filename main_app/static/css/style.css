@@ -2,8 +2,6 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    /* color: rgb(255, 255, 255);
-    background-color: black; */
   }
   
 main {
@@ -14,8 +12,23 @@ footer.page-footer {
     padding-top: 0;
     text-align: right;
 }
-  
+
 .profile-picture {
-  width: 200px;
+    width: 200px;
+    height: 100px;
+}
+
+.match-profile-picture {
+  width: 150px;
   height: 100px;
+  float: left;
+  margin: 0 10px 0 0;
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
 }

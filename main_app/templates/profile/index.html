@@ -7,7 +7,9 @@
 <div class="col s6">
     {% for photo in profile.photo_set.all %}
     <div class="card-panel teal-text center-align">
+    {% if user.id == profile.user_id %}
     <a href="/photo/{{ photo.id }}">
+    {% endif %}
     <img class="responsive-img profile-picture" src="{{photo.url}}"></a>
     <p>{{photo.caption}}</p>
     </div>
@@ -15,7 +17,6 @@
     <div class="card-panel teal-text center-align">No Photos Uploaded</div>
     {% endfor %}
 
-    {% if user.is_authenticated %} 
     {% if user.id == profile.user_id %}
 <form action="{% url 'add_photo' profile.id %}" enctype="multipart/form-data" method="POST" alt="Profile Picture" class="card-panel">
         {% csrf_token %}
@@ -25,7 +26,6 @@
         <br><br>
         <input type="submit" class="btn" value="Upload Photo">
     </form>
-    {% endif %} 
     {% endif %}
         
         <div class="card">
@@ -34,20 +34,16 @@
                 <p>Display Name: {{ profile.display_name }}</p>
                 <p>Full name: {{ profile.first_name }} {{ profile.last_name }}</p>
                 <p>Age: {{ profile.age }}</p>
-                <p>Gender: 
-                    {% if profile.gender == 'M' %}
-                    Male
-                    {% elif profile.gender == 'F' %}
-                    Female
-                    {% else %}
-                    Other
-                    {% endif %}
+                <p>Gender: {{ profile.get_gender_display }}
                 </p>
                 <p>Bio: {{ profile.bio }}</p>
+                <p>Favorite Game Genre: {{ profile.get_favorite_genre_display }}</p>
             </div>
+            {% if user.id == profile.user_id %}
             <div class="card-action">
                 <a href="{% url 'profile_update' profile.id %}">Update Profile</a>
             </div>
+            {% endif %} 
         </div>
 
         <div class="card">
@@ -55,43 +51,43 @@
                 <span class="card-title">Preference</span>
             {% for preference in profile.preference_set.all %}
                 {% if preference %}
-                <p>Interested In: 
-                    {% if preference.interest == 'M' %}
-                    Men
-                    {% elif preference.interest == 'W' %}
-                    Women
-                    {% else %}
-                    Other
-                    {% endif %}
+                <p>Interested In: {{ preference.get_interest_display }}
                 </p>
-                <p>Age Range: 
-                {% if preference.age_range == 'R1' %}
-                18-24
-                {% elif preference.age_range == 'R2' %}
-                25-34
-                {% elif preference.age_range == 'R3' %}
-                35-44
-                {% elif preference.age_range == 'R4' %}
-                45-54
-                {% else %}
-                50+
-                {% endif %}
+                <p>Age Range: {{ preference.get_age_range_display }}
                 </p>
                 </div>
+                {% if user.id == profile.user_id %}
                 <div class="card-action">
                     <a href="{% url 'preference_update' preference.id %}">Update Preference</a>
                 </div>
+                {% endif %}
                 {% endif %}
                 {% endfor %}
                 {% if not profile.preference_set.all %}
                 <div class="card-panel teal-text center-align">No Preference added</div>
             </div>
+            {% if user.id == profile.user_id %}
             <div class="card-action">
                 <a href="{% url 'add_preference' profile.id %}">Add Preference</a>
             </div>
             {% endif %}
+            {% endif %}
         </div>
     </div>
 
+
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Favorite Games</span>
+            {% for game in profile.favorite_games.all %}
+            <p>{{ game.name }}</p>
+            {% endfor %}
+            {% if user.id == profile.user_id %}
+            <div class="card-action">
+                <a href="{% url 'add_game' profile.id %}">Add Game</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
 
 {% endblock %}
