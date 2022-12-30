@@ -2,6 +2,16 @@
 {% block content %}
 
 <h1>Connect</h1>
-
-
+{% for profile in profiles %}
+<div class="card">
+<div class="card-content">
+{% for photo in profile.photo_set.all %}
+<img class="responsive-img profile-picture" src="{{ photo.url }}">
+{% endfor %}
+<p>Display name: {{ profile.display_name }}</p>
+<p>First name: {{ profile.first_name }}</p>
+<p><a href="{% url 'profile_index' profile_id=profile.id %}">View Profile</a></p>
+</div>
+</div>
+{% endfor %}
 {% endblock %}

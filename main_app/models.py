@@ -63,8 +63,10 @@ class Profile(models.Model):
     favorite_genre = models.CharField(max_length=3,choices=GENRE, default=GENRE[0][0])
     favorite_games = models.ManyToManyField(Game)
 
+
     def get_absolute_url(self):
         return reverse('profile', kwargs={'profile_id': self.id})
+
 
 class Preference(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
