@@ -34,9 +34,14 @@ footer.page-footer {
     visibility: hidden;
   }
 
+  .card {
+    width: auto;
+    height: 150px;
+  }
+
   .match-profile-picture {
-    width: 50px;
-    height: 30px;
+    max-width: 100px;
+    max-height: 75px;
     float: left;
     margin: 0 10px 0 0;
   }
