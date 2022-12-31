@@ -44,11 +44,11 @@
 <button type='submit'>Filter</button
 </form>
 
+
 {% for profile in profiles %}
-<div class="card">
-<div class="card-content">
-{% for photo in profile.photo_set.all %}
-<img class="responsive-img match-profile-picture" src="{{ photo.url }}" style="float: left">
+    <p>{{ profile.display_name }}</p>
+    <p>{{ profile.first_name }}</p>
+    <p>{{ profile.favorite_genre }}</p>
 {% endfor %}
 <p>First name: {{ profile.first_name }}</p>
 <p>Age: {{ profile.age }}</p>
