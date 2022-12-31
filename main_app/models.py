@@ -53,7 +53,8 @@ class Game(models.Model):
         choices=GENRE,
         default=GENRE[0][0])
 
-
+# obj = cursor("SELECT * FROM ...")
+# obj.results
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     display_name = models.CharField(max_length=25)
