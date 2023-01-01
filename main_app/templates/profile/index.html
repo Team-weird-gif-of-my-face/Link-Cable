@@ -80,7 +80,8 @@
         <div class="card-content">
             <span class="card-title">Favorite Games</span>
             {% for game in profile.favorite_games.all %}
-            <p>{{ game.name }}</p>
+            <p>Game: {{ game.name }}</p>
+            <p>Platform: {{ game.get_platform_display }}</p>
             {% endfor %}
             {% if user.id == profile.user_id %}
             <div class="card-action">
