@@ -170,8 +170,17 @@ class GameCreate(LoginRequiredMixin, CreateView):
   fields = ['name', 'platform', 'game_genre']
 
   def form_valid(self, form):
-    form.instance.user = self.request.user
-    return super().form_valid(form)
+      game = form.save(commit=False)
+      game.save()
+
+      profile = self.request.user.profile
+
+      profile.favorite_games.add(game)
+      profile.save()
+
+      self.success_url = reverse('profile_index', kwargs={'profile_id': profile.id})
+      return super().form_valid(form)
+# saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
 
   
 
