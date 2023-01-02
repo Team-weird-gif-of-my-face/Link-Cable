@@ -170,51 +170,8 @@ class GameCreate(LoginRequiredMixin, CreateView):
   fields = ['name', 'platform', 'game_genre']
 
   def form_valid(self, form):
-      game = form.save(commit=False)
-      game.save()
-
-      profile = self.request.user.profile
-
-      profile.favorite_games.add(game)
-      profile.save()
-
-      self.success_url = reverse('profile_index', kwargs={'profile_id': profile.id})
-      return super().form_valid(form)
-# saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
-
-def create_match(user1, user2):
-  if user1 in user2.likes.all() and user2 in user1.likes.all():
-    user1.matches.add(user2)
-    user2.matches.add(user1)
-    user1.save()
-    user2.save()
-    return user1.matches.first()
-  else:
-    return None
-
-def like_user(request, profile_id):
-  liked_user = Profile.objects.get(pk=profile_id)
-  current_user = request.user.profile
-  if request.method == 'POST':
-    form = LikeForm(request.POST)
-    if form.is_valid():
-      current_user.likes.add(liked_user)
-      current_user.save()
-      match = create_match(current_user, liked_user)
-      if match is not None:
-        messages.success(request, f'You have a new match! Current User: {current_user} Liked: {liked_user}' )
-      else:
-        messages.success(request, 'User liked')
-      return redirect('connect')
-  else:
-    current_user.likes.remove(liked_user)
-    current_user.save()
-    messages.success(request, 'Profile Unliked')
-  return render(request, 'index.html', {'form':form, 'user':liked_user})
-
-
-
-# saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
+    form.instance.user = self.request.user
+    return super().form_valid(form)
 
   
 
