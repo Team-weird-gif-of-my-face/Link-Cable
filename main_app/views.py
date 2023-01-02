@@ -213,6 +213,7 @@ def like_user(request, profile_id):
 
 # saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
 
+  
 
 # if we want to work with function based instead of class based components
 
