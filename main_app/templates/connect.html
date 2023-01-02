@@ -53,8 +53,8 @@
 {% endfor %}
 <p>First name: {{ profile.first_name }}</p>
 <p>Age: {{ profile.age }}</p>
-<p>Gender: {{ profile.get_gender_display }}</p>
-<p>Bio: {{ profile.bio }}</p>
+<p>Gender: {{ profile.gender }}</p>
+<p>Favorite Genre: {{ profile.favorite_genre }}
 <p><a href="{% url 'profile_index' profile_id=profile.id %}">View Profile</a></p>
 </div>
 </div>
