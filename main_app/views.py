@@ -171,6 +171,7 @@ class GameCreate(LoginRequiredMixin, CreateView):
     form.instance.user = self.request.user
     return super().form_valid(form)
 
+  
 
 # if we want to work with function based instead of class based components
 
