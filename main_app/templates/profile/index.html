@@ -39,6 +39,11 @@
                 <p>Bio: {{ profile.bio }}</p>
                 <p>Favorite Game Genre: {{ profile.get_favorite_genre_display }}</p>
             </div>
+            <form method='post' action="{% url 'like_user' user.id %}">
+                {%csrf_token%}
+                {{ form.as_p }}
+                <input type='submit' value='Like'>
+            </form>
             {% if user.id == profile.user_id %}
             <div class="card-action">
                 <a href="{% url 'profile_update' profile.id %}">Update Profile</a>
