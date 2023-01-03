@@ -179,6 +179,27 @@ class GameCreate(LoginRequiredMixin, CreateView):
 
       self.success_url = reverse('profile_index', kwargs={'profile_id': profile.id})
       return super().form_valid(form)
+
+def game_detail(request, game_id):
+  game = Game.objects.get(id=game_id)
+  return render(request, 'profile/game_detail.html', {'game': game})
+
+
+class GameUpdate(LoginRequiredMixin, UpdateView):
+  model = Game
+  fields = ['platform'] 
+
+  def get_success_url(self):
+    game_id = self.object.id
+    return f'/game/{game_id}'
+
+class GameDelete(LoginRequiredMixin, DeleteView):
+  model = Game
+  success_url = ''
+  
+  def get_success_url(self):
+    profile_id = self.request.user.profile.id
+    return f'/profile/{profile_id}'
 # saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
 
 

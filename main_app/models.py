@@ -52,6 +52,7 @@ class Game(models.Model):
         max_length=3,
         choices=GENRE,
         default=GENRE[0][0])
+        
 
 # obj = cursor("SELECT * FROM ...")
 # obj.results

@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 
-
+{% if object %}
+<h1>Update Games</h1>
+{% else %}
 <h1>Add Games</h1>
-
+{% endif %}
 <form action="" method="POST">
   {% csrf_token %}
   <table>
