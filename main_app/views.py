@@ -204,7 +204,7 @@ def like_user(request, profile_id):
       messages.success(request, 'You have a new match!')
     else:
       messages.success(request, 'User liked')
-    return redirect('profile_index')
+    return redirect('connect')
   else:
     form = LikeForm()
   return render(request, 'index.html', {'form':form, 'user':liked_user})
