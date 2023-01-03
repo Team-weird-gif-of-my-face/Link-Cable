@@ -41,6 +41,10 @@ GENRE = (
     ('SPO', 'Sports and Racing'),
     ('STR', 'Strategy and Puzzles')
 )
+FILTER = (
+    ('Y', "Use Filter"),
+    ('N', 'Ignore Filter')
+)
 
 class Game(models.Model):
     name = models.CharField(max_length=100)
@@ -77,13 +81,21 @@ class Preference(models.Model):
         choices=INTEREST,
         default=INTEREST[0][0]
     )
-    interest_filter_field = models.BooleanField(default=True)
+    interest_filter_field = models.CharField(
+        max_length=2,
+        choices=FILTER,
+        default=FILTER[0][0]
+    )
     age_range = models.CharField(
         max_length=2,
         choices=AGE,
         default=AGE[0][0]
     )
-    age_filter_field = models.BooleanField(default=True)
+    age_filter_field = models.CharField(
+        max_length=2,
+        choices=FILTER,
+        default=FILTER[0][0]
+    )
     def get_absolute_url(self):
         return reverse('preference', kwargs={'preference_id': self.id})
 

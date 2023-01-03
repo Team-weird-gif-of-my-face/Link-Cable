@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from .forms import PreferenceForm
 from .models import Profile, Photo, Preference, Game
-
+import random
 # Create your views here.
 
 def home(request):
@@ -22,8 +22,30 @@ def about(request):
 
 @login_required
 def connect(request):
+  filteredProfiles = ''
   profiles = Profile.objects.exclude(user=request.user)
-  return render(request, 'connect.html', {'profiles': profiles})
+  userProfile = Profile.objects.get(user=request.user)
+  preference = Preference.objects.get(profile = userProfile)
+  if(preference.interest_filter_field == 'Y' and preference.age_filter_field == 'Y'):
+    if(preference.interest == 'A'):
+      filteredProfiles = profiles.objects.filter(gender='M')
+      if(preference.age_range == 'R1'):
+        filteredProfiles = filteredProfiles.object.filter(age__level__lte = 24)
+      elif(preference.age_range == 'R2'):
+        filteredProfiles = filteredProfiles.object.filter(age__level__gte = 25)
+        filteredProfiles = filteredProfiles.object.filter(age__level__lte = 34)
+      elif(preference.age_range == 'R3'):
+        filteredProfiles = filteredProfiles.object.filter(age__level__gte = 35)
+        filteredProfiles = filteredProfiles.object.filter(age__level__lte = 44)
+      elif(preference.age_range == 'R4'):
+        filteredProfiles = filteredProfiles.object.filter(age__level__gte = 45)
+        filteredProfiles = filteredProfiles.object.filter(age__level__lte = 54)
+      elif(preference.age_range == 'R5'):
+        filteredProfiles = filteredProfiles.object.filter(age__level__gte = 55)
+
+  randomProfile = random.choice(profiles)
+
+  return render(request, 'connect.html', {'filteredProfiles': filteredProfiles})
 
 
 @login_required
@@ -96,7 +118,7 @@ class PreferenceCreate(LoginRequiredMixin, CreateView):
 
 class PreferenceUpdate(LoginRequiredMixin, UpdateView):
   model = Preference
-  fields = ['interest', 'age_range'] 
+  form_class = PreferenceForm
 
   def get_success_url(self):
     profile_id = self.object.profile_id
@@ -170,7 +192,6 @@ class GameCreate(LoginRequiredMixin, CreateView):
   def form_valid(self, form):
     form.instance.user = self.request.user
     return super().form_valid(form)
-
 
 # if we want to work with function based instead of class based components
 
