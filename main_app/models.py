@@ -69,19 +69,29 @@ class Profile(models.Model):
     def get_absolute_url(self):
         return reverse('profile', kwargs={'profile_id': self.id})
 
-
-class Preference(models.Model):
+class Preference_Interest(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     interest = models.CharField(
         max_length=1,
-        choices=INTEREST)
-    age_range = models.CharField(
-        max_length=2,
-        choices=AGE)
+        choice=INTEREST,
+        default=INTEREST[0][0]
+    )
+    filter_field = models.BooleanField(default=True)
 
     def get_absolute_url(self):
-        return reverse('preference', kwargs={'preference_id': self.id})
+        return reverse('preference', kwargs={'preference_interest_id': self.id})
 
+class Preference_AgeRange(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    ageRange = models.CharField(
+        max_length=2,
+        choices=AGE,
+        default=AGE[0][0]
+    )
+    filter_field = models.BooleanField(default=True)
+
+    def get_absolute_url(self):
+        return reverse('preference', kwargs={'preference_ageRange_id': self.id})
 
 class Photo(models.Model):
     url = models.CharField(max_length=200)
