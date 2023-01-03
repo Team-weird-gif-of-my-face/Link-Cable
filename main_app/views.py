@@ -9,7 +9,7 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from .forms import PreferenceForm
-from .models import Profile, Photo, Preference_Interest, Preference_AgeRange, Game
+from .models import Profile, Photo, Preference, Game
 
 # Create your views here.
 
