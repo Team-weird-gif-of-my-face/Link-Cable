@@ -9,7 +9,9 @@ from django.views.generic import ListView, DetailView
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
-from .forms import PreferenceForm
+from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from .forms import PreferenceForm, LikeForm
 from .models import Profile, Photo, Preference, Game
 
 # Create your views here.
@@ -180,26 +182,35 @@ class GameCreate(LoginRequiredMixin, CreateView):
       self.success_url = reverse('profile_index', kwargs={'profile_id': profile.id})
       return super().form_valid(form)
 
-def game_detail(request, game_id):
-  game = Game.objects.get(id=game_id)
-  return render(request, 'profile/game_detail.html', {'game': game})
+def create_match(user1, user2):
+  if user1 in user2.likes.all() and user2 in user1.likes.all():
+    user1.matches.add(user2)
+    user2.matches.add(user1)
+    user1.save()
+    user2.save()
+    return (user1, user2)
+  else:
+    return None
+
+def like_user(request, profile_id):
+  liked_user = get_object_or_404(Profile, pk=profile_id)
+  current_user = request.user.profile
+  if request.method == 'POST':
+    form = LikeForm(request.POST)
+    current_user.likes.add(liked_user)
+    current_user.save()
+    match = create_match(current_user, liked_user)
+    if match is not None:
+      messages.success(request, 'You have a new match!')
+    else:
+      messages.success(request, 'User liked')
+    return redirect('profile_index')
+  else:
+    form = LikeForm()
+  return render(request, 'index.html', {'form':form, 'user':liked_user})
 
 
-class GameUpdate(LoginRequiredMixin, UpdateView):
-  model = Game
-  fields = ['platform'] 
 
-  def get_success_url(self):
-    game_id = self.object.id
-    return f'/game/{game_id}'
-
-class GameDelete(LoginRequiredMixin, DeleteView):
-  model = Game
-  success_url = ''
-  
-  def get_success_url(self):
-    profile_id = self.request.user.profile.id
-    return f'/profile/{profile_id}'
 # saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
 
 

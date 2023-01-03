@@ -19,6 +19,7 @@ urlpatterns = [
   path('photo/<int:photo_id>/', views.photo_detail, name='photo_detail'),
   path('photo/<int:pk>/delete/', views.PhotoDelete.as_view(), name='photo_delete'),
   path('photo/<int:pk>/photo_update/', views.PhotoUpdate.as_view(), name='photo_update'),
+  path('like/<int:profile_id>/', views.like_user, name='like_user'),
 ]
 
 # if we want to work with function based instead of class based components
