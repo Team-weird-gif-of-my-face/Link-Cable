@@ -6,9 +6,12 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
+from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
-from .forms import PreferenceForm
+from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from .forms import PreferenceForm, LikeForm
 from .models import Profile, Photo, Preference, Game
 
 # Create your views here.
@@ -18,7 +21,6 @@ def home(request):
 
 def about(request):
     return render(request, 'about.html')
-
 
 @login_required
 def connect(request):
@@ -168,9 +170,50 @@ class GameCreate(LoginRequiredMixin, CreateView):
   fields = ['name', 'platform', 'game_genre']
 
   def form_valid(self, form):
-    form.instance.user = self.request.user
-    return super().form_valid(form)
+      game = form.save(commit=False)
+      game.save()
 
+      profile = self.request.user.profile
+
+      profile.favorite_games.add(game)
+      profile.save()
+
+      self.success_url = reverse('profile_index', kwargs={'profile_id': profile.id})
+      return super().form_valid(form)
+# saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
+
+def create_match(user1, user2):
+  if user1 in user2.likes.all() and user2 in user1.likes.all():
+    user1.matches.add(user2)
+    user2.matches.add(user1)
+    user1.save()
+    user2.save()
+    return (user1, user2)
+  else:
+    return None
+
+def like_user(request, profile_id):
+  liked_user = get_object_or_404(Profile, pk=profile_id)
+  current_user = request.user.profile
+  if request.method == 'POST':
+    form = LikeForm(request.POST)
+    current_user.likes.add(liked_user)
+    current_user.save()
+    match = create_match(current_user, liked_user)
+    if match is not None:
+      messages.success(request, 'You have a new match!')
+    else:
+      messages.success(request, 'User liked')
+    return redirect('connect')
+  else:
+    form = LikeForm()
+  return render(request, 'index.html', {'form':form, 'user':liked_user})
+
+
+
+# saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
+
+  
 
 # if we want to work with function based instead of class based components
 
