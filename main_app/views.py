@@ -22,30 +22,16 @@ def about(request):
 
 @login_required
 def connect(request):
-  filteredProfiles = ''
+
   profiles = Profile.objects.exclude(user=request.user)
   userProfile = Profile.objects.get(user=request.user)
   preference = Preference.objects.get(profile = userProfile)
-  if(preference.interest_filter_field == 'Y' and preference.age_filter_field == 'Y'):
-    if(preference.interest == 'A'):
-      filteredProfiles = profiles.objects.filter(gender='M')
-      if(preference.age_range == 'R1'):
-        filteredProfiles = filteredProfiles.object.filter(age__level__lte = 24)
-      elif(preference.age_range == 'R2'):
-        filteredProfiles = filteredProfiles.object.filter(age__level__gte = 25)
-        filteredProfiles = filteredProfiles.object.filter(age__level__lte = 34)
-      elif(preference.age_range == 'R3'):
-        filteredProfiles = filteredProfiles.object.filter(age__level__gte = 35)
-        filteredProfiles = filteredProfiles.object.filter(age__level__lte = 44)
-      elif(preference.age_range == 'R4'):
-        filteredProfiles = filteredProfiles.object.filter(age__level__gte = 45)
-        filteredProfiles = filteredProfiles.object.filter(age__level__lte = 54)
-      elif(preference.age_range == 'R5'):
-        filteredProfiles = filteredProfiles.object.filter(age__level__gte = 55)
+  interest = preference.interest
+  minAge = preference.age_range_min
+  maxAge = preference.age_range_max
+  filteredProfiles = Profile.objects.exclude(user=request.user).filter(favorite_genre =userProfile.favorite_genre)
+  return render(request, 'connect.html', {'filteredProfiles':filteredProfiles})
 
-  randomProfile = random.choice(profiles)
-
-  return render(request, 'connect.html', {'filteredProfiles': filteredProfiles})
 
 
 @login_required
@@ -71,7 +57,7 @@ def signup(request):
 
 class ProfileCreate(LoginRequiredMixin, CreateView):
   model = Profile
-  fields = ['display_name', 'first_name', 'last_name', 'age', 'gender', 'bio', 'favorite_genre']
+  fields = ['display_name', 'first_name', 'last_name', 'birthday', 'gender', 'bio', 'favorite_genre']
   success_url = ''
 
   def dispatch(self, request, *args, **kwargs):
@@ -99,7 +85,7 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
 
 class PreferenceCreate(LoginRequiredMixin, CreateView):
   model = Preference
-  fields = ['interest', 'age_range']
+  fields = ['interest', 'age_range_min','age_range_max']
   success_url=''
 
   def dispatch(self, request, *args, **kwargs):

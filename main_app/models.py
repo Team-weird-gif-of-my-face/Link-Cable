@@ -1,34 +1,27 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.core.validators import MaxValueValidator, MinValueValidator
+import datetime
+
 
 GENDER = (
     ('M', 'Male'),
     ('F', 'Female'),
-    ('T', 'Transgender'),
     ('N', 'Non-Binary'),
-    ('P', 'Prefer not to say')
 )
 
 INTEREST = (
     ('M', 'Men'),
-    ('W', 'Women'),
-    ('T', 'Trans'),
-    ('A', 'All')
+    ('F', 'Female'),
+    ('N', 'Non-Binary'),
+    ('E', 'Everyone')
 )
 
 PLATFORM = (
     ('X', 'Xbox'),
     ('S', 'Playstation'),
     ('P', 'PC'),
-)
-
-AGE = (
-    ('R1', '18-24'),
-    ('R2', '25-34'),
-    ('R3', '35-44'),
-    ('R4', '45-54'),
-    ('R5', '55+'),
 )
 
 GENRE = (
@@ -59,17 +52,23 @@ class Game(models.Model):
 
 # obj = cursor("SELECT * FROM ...")
 # obj.results
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     display_name = models.CharField(max_length=25)
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25)
-    age = models.PositiveIntegerField()
+    birthday = models.DateField('Birthday')
     gender = models.CharField(max_length=1,choices=GENDER)
     bio = models.TextField(blank=True)
     favorite_genre = models.CharField(max_length=3,choices=GENRE, default=GENRE[0][0])
     favorite_games = models.ManyToManyField(Game)
 
+    def age(self):
+        if(int((datetime.date.today() - self.birthday).days / 365  ) >= 18):
+            return int((datetime.date.today() - self.birthday).days / 365)
+    
     def get_absolute_url(self):
         return reverse('profile', kwargs={'profile_id': self.id})
 
@@ -81,21 +80,10 @@ class Preference(models.Model):
         choices=INTEREST,
         default=INTEREST[0][0]
     )
-    interest_filter_field = models.CharField(
-        max_length=2,
-        choices=FILTER,
-        default=FILTER[0][0]
-    )
-    age_range = models.CharField(
-        max_length=2,
-        choices=AGE,
-        default=AGE[0][0]
-    )
-    age_filter_field = models.CharField(
-        max_length=2,
-        choices=FILTER,
-        default=FILTER[0][0]
-    )
+    age_range_min = models.IntegerField(validators=[MinValueValidator(18)])
+    age_range_max = models.IntegerField(validators=[MinValueValidator(18)])
+
+
     def get_absolute_url(self):
         return reverse('preference', kwargs={'preference_id': self.id})
 
@@ -110,3 +98,4 @@ class Photo(models.Model):
 
     def get_absolute_url(self):
         return reverse('photo', kwargs={'photo_id': self.id})
+
