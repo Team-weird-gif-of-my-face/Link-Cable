@@ -188,25 +188,28 @@ def create_match(user1, user2):
     user2.matches.add(user1)
     user1.save()
     user2.save()
-    return (user1, user2)
+    return user1.matches.first()
   else:
     return None
 
 def like_user(request, profile_id):
-  liked_user = get_object_or_404(Profile, pk=profile_id)
+  liked_user = Profile.objects.get(pk=profile_id)
   current_user = request.user.profile
   if request.method == 'POST':
     form = LikeForm(request.POST)
-    current_user.likes.add(liked_user)
-    current_user.save()
-    match = create_match(current_user, liked_user)
-    if match is not None:
-      messages.success(request, 'You have a new match!')
-    else:
-      messages.success(request, 'User liked')
-    return redirect('connect')
+    if form.is_valid():
+      current_user.likes.add(liked_user)
+      current_user.save()
+      match = create_match(current_user, liked_user)
+      if match is not None:
+        messages.success(request, f'You have a new match! Current User: {current_user} Liked: {liked_user}' )
+      else:
+        messages.success(request, 'User liked')
+      return redirect('connect')
   else:
-    form = LikeForm()
+    current_user.likes.remove(liked_user)
+    current_user.save()
+    messages.success(request, 'Profile Unliked')
   return render(request, 'index.html', {'form':form, 'user':liked_user})
 
 
