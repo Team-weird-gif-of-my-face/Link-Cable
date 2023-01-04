@@ -39,11 +39,25 @@
                 <p>Bio: {{ profile.bio }}</p>
                 <p>Favorite Game Genre: {{ profile.get_favorite_genre_display }}</p>
             </div>
+            {% comment %} Like User {% endcomment %}
+            <form method='post' action="{% url 'like_user' user.id %}">
+                {%csrf_token%}
+                {{ form.as_p }}
+                <input type='submit' value='Like'>
+            </form>
             {% if user.id == profile.user_id %}
             <div class="card-action">
                 <a href="{% url 'profile_update' profile.id %}">Update Profile</a>
             </div>
             {% endif %} 
+
+            {% if messages %}
+                <ul class='messages'>
+                    {% for message in messages %}
+                        <li {%if message.tags %} class="{{message.tags}}"{%endif%}>{{message}}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
 
         <div class="card">
