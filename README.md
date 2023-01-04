@@ -68,3 +68,5 @@ As a user, AAU, I want the ability to...
 ## Credits
 
 Wireframes and ERD was created using [Lucidchart](https://www.lucidchart.com/).
+
+gameboy by Zero Team0 from <a href="https://thenounproject.com/browse/icons/term/gameboy/" target="_blank" title="gameboy Icons">Noun Project</a>
