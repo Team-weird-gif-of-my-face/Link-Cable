@@ -54,8 +54,6 @@ class Game(models.Model):
         default=GENRE[0][0])
         
 
-# obj = cursor("SELECT * FROM ...")
-# obj.results
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     display_name = models.CharField(max_length=25)
@@ -96,3 +94,4 @@ class Photo(models.Model):
 
     def get_absolute_url(self):
         return reverse('photo', kwargs={'photo_id': self.id})
+

@@ -105,15 +105,6 @@ class PreferenceUpdate(LoginRequiredMixin, UpdateView):
     return f'/profile/{profile_id}'
 
 
-class PhotoDelete(LoginRequiredMixin, DeleteView):
-  model = Photo
-  success_url = ''
-  
-  def get_success_url(self):
-    profile_id = self.object.profile_id
-    return f'/profile/{profile_id}'
-
-
 @login_required
 def add_preference(request, profile_id):
   error_message = ''
@@ -165,6 +156,15 @@ class PhotoUpdate(UpdateView):
     return f'/photo/{photo_id}'
 
 
+class PhotoDelete(LoginRequiredMixin, DeleteView):
+  model = Photo
+  success_url = ''
+  
+  def get_success_url(self):
+    profile_id = self.object.profile_id
+    return f'/profile/{profile_id}'
+    
+
 class GameCreate(LoginRequiredMixin, CreateView):
   model = Game
   fields = ['name', 'platform', 'game_genre']
@@ -181,6 +181,27 @@ class GameCreate(LoginRequiredMixin, CreateView):
       self.success_url = reverse('profile_index', kwargs={'profile_id': profile.id})
       return super().form_valid(form)
 # saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
+
+def game_detail(request, game_id):
+  game = Game.objects.get(id=game_id)
+  return render(request, 'profile/game_detail.html', {'game': game})
+
+
+class GameUpdate(LoginRequiredMixin, UpdateView):
+  model = Game
+  fields = ['platform'] 
+
+  def get_success_url(self):
+    game_id = self.object.id
+    return f'/game/{game_id}'
+
+class GameDelete(LoginRequiredMixin, DeleteView):
+  model = Game
+  success_url = ''
+  
+  def get_success_url(self):
+    profile_id = self.request.user.profile.id
+    return f'/profile/{profile_id}'
 
 def create_match(user1, user2):
   if user1 in user2.likes.all() and user2 in user1.likes.all():
