@@ -11,10 +11,12 @@
 {% for photo in filteredProfiles.photo_set.all %}
 <img class="responsive-img match-profile-picture" src="{{ photo.url }}" style="float: left">
 {% endfor %}
+
 <p>First name: {{ filteredProfiles.first_name }}</p>
 <p>Age: {{ filteredProfiles.age }}</p>
 <p>Gender: {{ filteredProfiles.gender }}</p>
 <p>Favorite Genre: {{ filteredProfiles.favorite_genre }}
+
 <p><a href="{% url 'profile_index' profile_id=profile.id %}">View Profile</a></p>
 </div>
 </div>
