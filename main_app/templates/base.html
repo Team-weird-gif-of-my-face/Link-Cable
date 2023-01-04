@@ -10,15 +10,18 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body>
   <header class="navbar-fixed">
     <nav>
-      <div class="navbar nav-wrapper grey">
+      <div class="navbar nav-wrapper">
         <ul>
-          <li>
-            <a href="{% url 'home' %}" class="brand-logo"><i class="material-icons black-text">&nbsp;&nbsp;games</i>Link Cable&nbsp;&nbsp;</a>
+          <li><img class='nav-icon' src="{% static 'images/noun-gameboy-4697185.png' %}"/>
+            <a href="{% url 'home' %}" class="brand-logo black-text">Link Cable</a>
           </li>
         </ul>
 
@@ -71,7 +74,7 @@
       </ul>
     </div>
     </nav>
-  <footer class="page-footer grey" style="position: fixed; bottom: 0; width: 100%;">
+  <footer class="page-footer" style="position: fixed; bottom: 0; width: 100%;">
     <div class="right">All Rights Reserved, &copy; 2022 Team Owen &nbsp;</div>
   </footer>
 </body>
