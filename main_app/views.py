@@ -182,6 +182,15 @@ class GameCreate(LoginRequiredMixin, CreateView):
       return super().form_valid(form)
 # saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
 
+      profile = self.request.user.profile
+
+      profile.favorite_games.add(game)
+      profile.save()
+
+      self.success_url = reverse('profile_index', kwargs={'profile_id': profile.id})
+      return super().form_valid(form)
+# saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
+
   
 
 # if we want to work with function based instead of class based components
