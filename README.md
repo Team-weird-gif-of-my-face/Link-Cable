@@ -61,10 +61,14 @@ As a user, AAU, I want the ability to...
 
 
 ## Planned future enhancements
-
-- 
+- implement visual themes that users can select
+- create moderator profile
+- implement live chat with static rooms and private chats between users
+- implement a blog feature where users can post about the games they are playing 
 
 
 ## Credits
 
-Wireframes and ERD was created using [Lucidchart](https://www.lucidchart.com/).
+Wireframes and ERD were created using [Lucidchart](https://www.lucidchart.com/).
+
+gameboy by Zero Team0 from <a href="https://thenounproject.com/browse/icons/term/gameboy/" target="_blank" title="gameboy Icons">Noun Project</a>
