@@ -13,7 +13,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from .forms import PreferenceForm, LikeForm
 from .models import Profile, Photo, Preference, Game
-
+import random
 # Create your views here.
 
 def home(request):
@@ -24,8 +24,16 @@ def about(request):
 
 @login_required
 def connect(request):
+
   profiles = Profile.objects.exclude(user=request.user)
-  return render(request, 'connect.html', {'profiles': profiles})
+  userProfile = Profile.objects.get(user=request.user)
+  preference = Preference.objects.get(profile = userProfile)
+  interest = preference.interest
+  minAge = preference.age_range_min
+  maxAge = preference.age_range_max
+  filteredProfiles = Profile.objects.exclude(user=request.user).filter(favorite_genre =userProfile.favorite_genre)
+  return render(request, 'connect.html', {'filteredProfiles':filteredProfiles})
+
 
 
 @login_required
@@ -51,7 +59,7 @@ def signup(request):
 
 class ProfileCreate(LoginRequiredMixin, CreateView):
   model = Profile
-  fields = ['display_name', 'first_name', 'last_name', 'age', 'gender', 'bio', 'favorite_genre']
+  fields = ['display_name', 'first_name', 'last_name', 'birthday', 'gender', 'bio', 'favorite_genre']
   success_url = ''
 
   def dispatch(self, request, *args, **kwargs):
@@ -79,7 +87,7 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
 
 class PreferenceCreate(LoginRequiredMixin, CreateView):
   model = Preference
-  fields = ['interest', 'age_range']
+  fields = ['interest', 'age_range_min','age_range_max']
   success_url=''
 
   def dispatch(self, request, *args, **kwargs):
@@ -98,7 +106,7 @@ class PreferenceCreate(LoginRequiredMixin, CreateView):
 
 class PreferenceUpdate(LoginRequiredMixin, UpdateView):
   model = Preference
-  fields = ['interest', 'age_range'] 
+  form_class = PreferenceForm
 
   def get_success_url(self):
     profile_id = self.object.profile_id
@@ -214,6 +222,7 @@ def like_user(request, profile_id):
 # saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
 
   
+
 
 # if we want to work with function based instead of class based components
 

@@ -67,7 +67,7 @@
                 {% if preference %}
                 <p>Interested In: {{ preference.get_interest_display }}
                 </p>
-                <p>Age Range: {{ preference.get_age_range_display }}
+                <p>Age Range: {{ preference.age_range_min }} - {{ preference.age_range_max }}
                 </p>
                 </div>
                 {% if user.id == profile.user_id %}
