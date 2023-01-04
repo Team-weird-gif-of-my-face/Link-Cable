@@ -22,7 +22,6 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
-
 @login_required
 def connect(request):
   profiles = Profile.objects.exclude(user=request.user)
@@ -181,6 +180,7 @@ class GameCreate(LoginRequiredMixin, CreateView):
 
       self.success_url = reverse('profile_index', kwargs={'profile_id': profile.id})
       return super().form_valid(form)
+# saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
 
 def create_match(user1, user2):
   if user1 in user2.likes.all() and user2 in user1.likes.all():
