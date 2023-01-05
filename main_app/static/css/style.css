@@ -29,7 +29,7 @@ footer.page-footer {
   color: #7B0828;
 }
 .nav-icon {
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
 .profile-picture {
@@ -115,6 +115,13 @@ footer.page-footer {
   footer {
     font-size: 8px;
   }
+
+.footer-center {
+  text-align: center;
+  display: table;
+  overflow: hidden;
+  margin: 0 auto;
+}
 
   .background-image {
     width: 300px;

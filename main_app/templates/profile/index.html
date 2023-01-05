@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Profile</h1>
+<h2>{{ profile.display_name }}</h2>
 
 
 <div class="col s6">
     {% for photo in profile.photo_set.all %}
-    <div class="card-panel teal-text center-align">
+    <div class="card card-panel teal-text center-align">
     {% if user.id == profile.user_id %}
     <a href="/photo/{{ photo.id }}">
     {% endif %}
@@ -14,11 +14,11 @@
     <p>"{{photo.caption}}"</p>
     </div>
     {% empty %}
-    <div class="card-panel teal-text center-align">No Photos Uploaded</div>
+    <div class="card card-panel teal-text center-align">No Photos Uploaded</div>
     {% endfor %}
 
     {% if user.id == profile.user_id %}
-<form action="{% url 'add_photo' profile.id %}" enctype="multipart/form-data" method="POST" alt="Profile Picture" class="card-panel">
+<form action="{% url 'add_photo' profile.id %}" enctype="multipart/form-data" method="POST" alt="Profile Picture" class="card card-panel">
         {% csrf_token %}
         <input type="file" name="photo-file">
         <br><br>
@@ -31,8 +31,7 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title">Profile</span>
-                <p>Display Name: {{ profile.display_name }}</p>
-                <p>Full name: {{ profile.first_name }} {{ profile.last_name }}</p>
+                <p>Name: {{ profile.first_name }} {{ profile.last_name }}</p>
                 <p>Age: {{ profile.age }}</p>
                 <p>Gender: {{ profile.get_gender_display }}
                 </p>
@@ -78,7 +77,7 @@
                 {% endif %}
                 {% endfor %}
                 {% if not profile.preference_set.all %}
-                <div class="card-panel teal-text center-align">No Preference added</div>
+                <p>No Preference added</p>
             </div>
             {% if user.id == profile.user_id %}
             <div class="card-action">

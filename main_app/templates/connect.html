@@ -13,11 +13,19 @@
 <img class="responsive-img match-profile-picture" src="{{ photo.url }}" style="float: left">
 {% endfor %}
 
-<p>First name: {{ profile.first_name }}</p>
+<p>Name: {{ profile.first_name }}</p>
 <p>Age: {{ profile.age }}</p>
 <p>Gender: {{ profile.get_gender_display }}</p>
-<p>Favorite Game Genre: {{ profile.get_favorite_genre_display }}
+<p>Favorite Game Genre: {{ profile.get_favorite_genre_display }}</p>
+{% if profile.favorite_games.all %}
+    <p>Currently Playing: </p>
+    {% for game in profile.favorite_games.all %}
+        <p> - {{ game.name }} ({{ game.get_platform_display }})</p>
+    {% endfor %}
+{% endif %}
 
+<p>Bio: {{ profile.bio }}</p>
+<hr></hr>
 <p><a href="{% url 'profile_index' profile_id=profile.id %}">View Profile</a></p>
 </div>
 </div>

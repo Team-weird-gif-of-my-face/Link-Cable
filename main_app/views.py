@@ -37,6 +37,7 @@ def about(request):
 
 @login_required
 def connect(request):
+  try:
     user_profile = Profile.objects.get(user=request.user)
     preference = Preference.objects.get(profile=user_profile)
     interest = preference.interest
@@ -55,6 +56,10 @@ def connect(request):
     )
 
     return render(request, 'connect.html', {'filtered_profiles': filtered_profiles})
+
+  except Preference.DoesNotExist:
+    profile = request.user.profile
+    return redirect('/profile/' + str(profile.id) + '/add_preference')
 
 
 @login_required
