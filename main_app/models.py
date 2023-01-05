@@ -68,6 +68,7 @@ class Profile(models.Model):
     likes = models.ManyToManyField('self',symmetrical=False, related_name='liked_by')
     matches = models.ManyToManyField('self', symmetrical=False, related_name='matched_with')
 
+
     def get_absolute_url(self):
         return reverse('profile', kwargs={'profile_id': self.id})
 

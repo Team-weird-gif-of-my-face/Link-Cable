@@ -24,7 +24,8 @@ def about(request):
 
 @login_required
 def connect(request):
-  profiles = Profile.objects.exclude(user=request.user)
+  userProfile = Profile.objects.get(user=request.user)
+  profiles = Profile.objects.exclude(user=request.user).filter(favorite_genre =userProfile.favorite_genre)
   return render(request, 'connect.html', {'profiles': profiles})
 
 
