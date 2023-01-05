@@ -37,29 +37,9 @@ def about(request):
 
 @login_required
 def connect(request):
-  try:
-    user_profile = Profile.objects.get(user=request.user)
-    preference = Preference.objects.get(profile=user_profile)
-    interest = preference.interest
-    min_age = preference.age_range_min
-    max_age = preference.age_range_max
-
-    # filter profiles by favorite genre and interest
-    filtered_profiles = Profile.objects.exclude(user=request.user).filter(
-        Q(favorite_genre=user_profile.favorite_genre) & Q(gender=interest)
-    )
-
-    # filter by age range
-    filtered_profiles = filtered_profiles.filter(
-        birthday__gte=datetime.date(year=datetime.datetime.now().year - max_age, month=1, day=1),
-        birthday__lte=datetime.date(year=datetime.datetime.now().year - min_age, month=1, day=1)
-    )
-
-    return render(request, 'connect.html', {'filtered_profiles': filtered_profiles})
-
-  except Preference.DoesNotExist:
-    profile = request.user.profile
-    return redirect('/profile/' + str(profile.id) + '/add_preference')
+  userProfile = Profile.objects.get(user=request.user)
+  profiles = Profile.objects.exclude(user=request.user).filter(favorite_genre =userProfile.favorite_genre)
+  return render(request, 'connect.html', {'profiles': profiles})
 
 
 @login_required

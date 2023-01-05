@@ -62,13 +62,8 @@ class Profile(models.Model):
     favorite_genre = models.CharField(max_length=3,choices=GENRE, default=GENRE[0][0])
     favorite_games = models.ManyToManyField(Game)
     likes = models.ManyToManyField('self',symmetrical=False, related_name='liked_by')
-    matches = models.ManyToManyField('self', related_name='matched_with')
-    contact_info = models.CharField(max_length=250)
+    matches = models.ManyToManyField('self',symmetrical=False, related_name='matched_with')
 
-    def age(self):
-        if(int((datetime.date.today() - self.birthday).days / 365  ) >= 18):
-            return int((datetime.date.today() - self.birthday).days / 365)
-    
     def get_absolute_url(self):
         return reverse('profile', kwargs={'profile_id': self.id})
 
