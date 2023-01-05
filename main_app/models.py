@@ -65,6 +65,7 @@ class Profile(models.Model):
     matches = models.ManyToManyField('self', related_name='matched_with')
     contact_info = models.CharField(max_length=250)
 
+
     def age(self):
         if(int((datetime.date.today() - self.birthday).days / 365  ) >= 18):
             return int((datetime.date.today() - self.birthday).days / 365)
