@@ -4,8 +4,8 @@
 
 <div class="card">
   <div class="card-content">
-    <span class="card-title">{{ game.name }}</span>
-    <span class="card-title">{{ game.get_platform_display }}</span>
+    <span class="card-title">Game: {{ game.name }}</span>
+    <span class="card-title">Platform: {{ game.get_platform_display }}</span>
   </div>
   {% if user.is_authenticated %} 
     {% if user_id == profile.user_id %}

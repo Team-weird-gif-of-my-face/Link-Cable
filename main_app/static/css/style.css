@@ -32,6 +32,13 @@ footer.page-footer {
   margin-top: 5px;
 }
 
+.profile-picture {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  border-radius: 50%;
+}
+
 .background-image {
   opacity: 10%;
   margin-left: 0;
@@ -82,14 +89,14 @@ footer.page-footer {
   visibility: hidden;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 1000px) {
   .hidden {
     visibility: hidden;
   }
 
   .card {
     width: auto;
-    height: 150px;
+    height: 25%;
   }
 
   .match-profile-picture {
@@ -102,7 +109,7 @@ footer.page-footer {
   .show {
     visibility: visible;
     position: sticky;
-    bottom: 0;
+    bottom: 5px;
   }
 
   footer {
@@ -111,7 +118,7 @@ footer.page-footer {
 
   .background-image {
     width: 300px;
-    height: 400px;
+    height: 300px;
     margin-left: 60px;
     margin-top: 150px;
   }

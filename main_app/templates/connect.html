@@ -5,24 +5,25 @@
 {% if not user.profile %}
 <h2> Sign In to start connecting! </h2>
 {% else %}
-{% for profile in filteredProfiles %}
+{% for profile in filtered_profiles %}
 
 <div class="card">
 <div class="card-content">
-{% for photo in filteredProfiles.photo_set.all %}
+{% for photo in profile.photo_set.all %}
 <img class="responsive-img match-profile-picture" src="{{ photo.url }}" style="float: left">
 {% endfor %}
 
-<p>First name: {{ filteredProfiles.first_name }}</p>
-<p>Age: {{ filteredProfiles.age }}</p>
-<p>Gender: {{ filteredProfiles.gender }}</p>
-<p>Favorite Genre: {{ filteredProfiles.favorite_genre }}
+<p>First name: {{ profile.first_name }}</p>
+<p>Age: {{ profile.age }}</p>
+<p>Gender: {{ profile.get_gender_display }}</p>
+<p>Favorite Game Genre: {{ profile.get_favorite_genre_display }}
 
 <p><a href="{% url 'profile_index' profile_id=profile.id %}">View Profile</a></p>
 </div>
 </div>
 {% endfor %}
 {% endif %}
+
 
 
 {% endblock %}

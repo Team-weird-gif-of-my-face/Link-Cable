@@ -11,7 +11,7 @@
     <a href="/photo/{{ photo.id }}">
     {% endif %}
     <img class="responsive-img profile-picture" src="{{photo.url}}"></a>
-    <p>{{photo.caption}}</p>
+    <p>"{{photo.caption}}"</p>
     </div>
     {% empty %}
     <div class="card-panel teal-text center-align">No Photos Uploaded</div>
@@ -93,10 +93,14 @@
     <div class="card">
         <div class="card-content">
             <span class="card-title">Favorite Games</span>
+            {% if not profile.favorite_games.all %}
+            <p>No games added yet!</p>
+            {% else %}
             {% for game in profile.favorite_games.all %}
             <p>Game: <a href="/game/{{ game.id }}">{{ game.name }}</a></p>
             <p>Platform: {{ game.get_platform_display }}</p>
             {% endfor %}
+            {% endif %}
             {% if user.id == profile.user_id %}
             <div class="card-action">
             <a href="{% url 'add_game' profile.id %}">Add Game</a>
