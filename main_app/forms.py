@@ -9,7 +9,7 @@ from django import forms
 class PreferenceForm(ModelForm):
     class Meta:
         model = Preference
-        fields = ['interest', 'age_range']
+        fields = ['interest', 'age_range_min', 'age_range_max']
 
 class LikeForm(ModelForm):
     class Meta:

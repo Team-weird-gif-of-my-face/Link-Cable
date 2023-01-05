@@ -12,7 +12,7 @@ GENDER = (
 )
 
 INTEREST = (
-    ('M', 'Men'),
+    ('M', 'Male'),
     ('F', 'Female'),
     ('N', 'Non-Binary'),
     ('E', 'Everyone')
@@ -49,9 +49,6 @@ class Game(models.Model):
         max_length=3,
         choices=GENRE,
         default=GENRE[0][0])
-
-# obj = cursor("SELECT * FROM ...")
-# obj.results
 
 
 class Profile(models.Model):
@@ -100,4 +97,3 @@ class Photo(models.Model):
 
     def get_absolute_url(self):
         return reverse('photo', kwargs={'photo_id': self.id})
-

@@ -5,7 +5,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import ListView, DetailView
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
@@ -13,7 +12,10 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from .forms import PreferenceForm, LikeForm
 from .models import Profile, Photo, Preference, Game
-import random
+from django.db.models import Q
+import datetime
+
+
 # Create your views here.
 
 def home(request):
@@ -22,18 +24,42 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+# @login_required
+# def connect(request):
+#   profiles = Profile.objects.exclude(user=request.user)
+#   userProfile = Profile.objects.get(user=request.user)
+#   preference = Preference.objects.get(profile = userProfile)
+#   interest = preference.interest
+#   minAge = preference.age_range_min
+#   maxAge = preference.age_range_max
+#   filteredProfiles = Profile.objects.exclude(user=request.user).filter(favorite_genre =userProfile.favorite_genre)
+#   return render(request, 'connect.html', {'filteredProfiles':filteredProfiles})
+
 @login_required
 def connect(request):
+  try:
+    user_profile = Profile.objects.get(user=request.user)
+    preference = Preference.objects.get(profile=user_profile)
+    interest = preference.interest
+    min_age = preference.age_range_min
+    max_age = preference.age_range_max
 
-  profiles = Profile.objects.exclude(user=request.user)
-  userProfile = Profile.objects.get(user=request.user)
-  preference = Preference.objects.get(profile = userProfile)
-  interest = preference.interest
-  minAge = preference.age_range_min
-  maxAge = preference.age_range_max
-  filteredProfiles = Profile.objects.exclude(user=request.user).filter(favorite_genre =userProfile.favorite_genre)
-  return render(request, 'connect.html', {'filteredProfiles':filteredProfiles})
+    # filter profiles by favorite genre and interest
+    filtered_profiles = Profile.objects.exclude(user=request.user).filter(
+        Q(favorite_genre=user_profile.favorite_genre) & Q(gender=interest)
+    )
 
+    # filter by age range
+    filtered_profiles = filtered_profiles.filter(
+        birthday__gte=datetime.date(year=datetime.datetime.now().year - max_age, month=1, day=1),
+        birthday__lte=datetime.date(year=datetime.datetime.now().year - min_age, month=1, day=1)
+    )
+
+    return render(request, 'connect.html', {'filtered_profiles': filtered_profiles})
+
+  except Preference.DoesNotExist:
+    profile = request.user.profile
+    return redirect('/profile/' + str(profile.id) + '/add_preference')
 
 
 @login_required
@@ -56,6 +82,9 @@ def signup(request):
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
 
+
+def logout_index(request):
+  return render(request, 'registration/logout.html')
 
 class ProfileCreate(LoginRequiredMixin, CreateView):
   model = Profile
@@ -113,37 +142,6 @@ class PreferenceUpdate(LoginRequiredMixin, UpdateView):
     return f'/profile/{profile_id}'
 
 
-class PhotoDelete(LoginRequiredMixin, DeleteView):
-  model = Photo
-  success_url = ''
-  
-  def get_success_url(self):
-    profile_id = self.object.profile_id
-    return f'/profile/{profile_id}'
-
-
-@login_required
-def add_preference(request, profile_id):
-  error_message = ''
-  if Preference.objects.filter(profile=request.user.profile).exists():
-    return redirect('/')
-  profile = request.user.profile
-  if request.method == 'POST':
-      form = PreferenceForm(request.POST)
-      if form.is_valid():
-        preference = form.save(commit=False)
-        preference.profile = profile
-        preference.save()
-        return redirect('/profile/' + str(profile.id))
-      else:
-        error_message = 'Invalid preference - try again'
-        form = PreferenceForm()
-  else:
-      form = PreferenceForm()
-  context = {'form': form, 'error_message': error_message}
-  return render(request, 'profile/add_preference.html', context)
-
-
 def add_photo(request, profile_id):
     photo_file = request.FILES.get('photo-file', None)
     caption = request.POST.get('caption', '')
@@ -173,6 +171,15 @@ class PhotoUpdate(UpdateView):
     return f'/photo/{photo_id}'
 
 
+class PhotoDelete(LoginRequiredMixin, DeleteView):
+  model = Photo
+  success_url = ''
+  
+  def get_success_url(self):
+    profile_id = self.object.profile_id
+    return f'/profile/{profile_id}'
+    
+
 class GameCreate(LoginRequiredMixin, CreateView):
   model = Game
   fields = ['name', 'platform', 'game_genre']
@@ -189,6 +196,27 @@ class GameCreate(LoginRequiredMixin, CreateView):
       self.success_url = reverse('profile_index', kwargs={'profile_id': profile.id})
       return super().form_valid(form)
 # saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
+
+def game_detail(request, game_id):
+  game = Game.objects.get(id=game_id)
+  return render(request, 'profile/game_detail.html', {'game': game})
+
+
+class GameUpdate(LoginRequiredMixin, UpdateView):
+  model = Game
+  fields = ['platform'] 
+
+  def get_success_url(self):
+    game_id = self.object.id
+    return f'/game/{game_id}'
+
+class GameDelete(LoginRequiredMixin, DeleteView):
+  model = Game
+  success_url = ''
+  
+  def get_success_url(self):
+    profile_id = self.request.user.profile.id
+    return f'/profile/{profile_id}'
 
 def create_match(user1, user2):
   if user1 in user2.likes.all() and user2 in user1.likes.all():

@@ -54,11 +54,21 @@
   </main>
 
   <nav class='show'>
-    <div class="navbar nav-wrapper grey">
-    <ul id="nav-mobile" class="center">
+    <div class="navbar nav-wrapper">
+    <ul id="nav-mobile" class="footer-center">
       <li><a class="black-text" href="{% url 'home' %}"><i class="material-icons">home</i></a></li>
+
+      {% if request.path == '/connect/' %}
+      <li><a class="black-text" href="{% url 'connect' %}"><i class="material-icons">people</i></a></li>
+  {% else %}
       <li><a class="black-text" href="{% url 'connect' %}"><i class="material-icons">people_outline</i></a></li>
-      <li><a class="black-text" href="{% url 'about' %}"><i class="material-icons">info_outline</i></a></li>
+  {% endif %}
+
+  {% if request.path == '/about/' %}
+  <li><a class="black-text" href="{% url 'connect' %}"><i class="material-icons">info</i></a></li>
+{% else %}
+<li><a class="black-text" href="{% url 'about' %}"><i class="material-icons">info_outline</i></a></li>
+{% endif %}
       {% if user.is_authenticated %}
       {% if not user.profile %}
       <li><a class="black-text" href="{% url 'profile_create' %}">Create Profile</a></li>
