@@ -1,12 +1,12 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>Photo Details</h1>
+<h3>Photo Details</h3>
 
 {%if photo.url %}
 <div class="card">
-  <div class="card-content">
-    <img class="responsive-img card-panel" src="{{photo.url}}" />
-    <span class="card-title">{{ photo.caption }}</span>
+  <div class="card-content center">
+    <img class="responsive-img profile-picture" src="{{photo.url}}"></a>
+    <p>"{{ photo.caption }}"</p>
   </div>
   {% if user.is_authenticated %} 
     {% if user_id == profile.user_id %}

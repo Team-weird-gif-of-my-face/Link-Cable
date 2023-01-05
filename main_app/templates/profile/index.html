@@ -1,50 +1,45 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h2>{{ profile.display_name }}</h2>
+<h3>{{ profile.display_name }}</h3>
 
 
 <div class="col s6">
     {% for photo in profile.photo_set.all %}
     <div class="card card-panel teal-text center-align">
-    {% if user.id == profile.user_id %}
-    <a href="/photo/{{ photo.id }}">
-    {% endif %}
+        
     <img class="responsive-img profile-picture" src="{{photo.url}}"></a>
+    <a class="btn-floating btn-medium teal image-btn" href="{% url 'photo_form' profile.id %}"><i class="material-icons">add_circle_outline</i></a>
     <p>"{{photo.caption}}"</p>
-    </div>
-    {% empty %}
-    <div class="card card-panel teal-text center-align">No Photos Uploaded</div>
-    {% endfor %}
 
     {% if user.id == profile.user_id %}
-<form action="{% url 'add_photo' profile.id %}" enctype="multipart/form-data" method="POST" alt="Profile Picture" class="card card-panel">
-        {% csrf_token %}
-        <input type="file" name="photo-file">
-        <br><br>
-        Caption:<input type="text" name="caption">
-        <br><br>
-        <input type="submit" class="btn" value="Upload Photo">
-    </form>
+    <p><a href="/photo/{{ photo.id }}">Edit Profile Picture</a></p>
     {% endif %}
+    </div>
+    {% empty %}
+    <div class="card card-panel teal-text center-align">No Photos Uploaded
+    <a class="btn-floating btn-medium teal no-image-btn" href="{% url 'photo_form' profile.id %}"><i class="material-icons">add_circle_outline</i></a> 
+    </div>
+    {% endfor %}
         
+
         <div class="card">
             <div class="card-content">
                 <span class="card-title">Profile</span>
                 <p>Name: {{ profile.first_name }} {{ profile.last_name }}</p>
                 <p>Age: {{ profile.age }}</p>
-                <p>Gender: {{ profile.get_gender_display }}
-                </p>
-                <p>Bio: {{ profile.bio }}</p>
+                <p>Gender: {{ profile.get_gender_display }}</p>
                 <p>Favorite Game Genre: {{ profile.get_favorite_genre_display }}</p>
                 <p>Contact info: {{ profile.contact_info }}</p>
+                <p>Bio: {{ profile.bio }}</p>
             </div>
-            {% comment %} Like User {% endcomment %}
+
             <form method='post' action="{% url 'like_user' profile.id %}">
                 {%csrf_token%}
                 {{ form.as_p }}
                 <input type='submit' value='Like'>
             </form>
+
             {% if user.id == profile.user_id %}
             <div class="card-action">
                 <a href="{% url 'profile_update' profile.id %}">Update Profile</a>

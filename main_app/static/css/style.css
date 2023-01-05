@@ -13,7 +13,17 @@ a {
 
 a:hover{
   color:#8DAA9D;
+}
 
+.image-btn {
+  position: absolute;
+  margin: -30px 0 30px 50px;
+}
+
+.no-image-btn {
+  position: absolute;
+  margin-top: -10px;
+  margin-left: 10px;
 }
 
 main {
@@ -38,6 +48,8 @@ footer.page-footer {
   margin-left: auto;
   margin-right: auto;
   display: block;
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
 }
 
@@ -76,7 +88,7 @@ footer.page-footer {
 
 .card {
   width: auto;
-  height: 350px;
+  height: 380px;
   background-color: whitesmoke;
 
 }
@@ -92,7 +104,7 @@ footer.page-footer {
 .show {
   visibility: visible;
   position: sticky;
-  bottom: 0;
+  bottom: 15px;
 }
 
 

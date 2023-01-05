@@ -63,7 +63,8 @@ class Profile(models.Model):
     favorite_games = models.ManyToManyField(Game)
     likes = models.ManyToManyField('self',symmetrical=False, related_name='liked_by')
     matches = models.ManyToManyField('self', related_name='matched_with')
-    contact_info = models.CharField(max_length=250)
+    contact_info = models.TextField(blank=True)
+    
 
 
     def age(self):
@@ -95,7 +96,10 @@ class Photo(models.Model):
     caption = models.CharField(max_length=250, blank=True)
 
     def __str__(self):
-        return f"Photo for profile_id: {self.profile_id} @{self.url}"
+        return f"Photo for profile: {self.profile} @{self.url}"
 
     def get_absolute_url(self):
         return reverse('photo', kwargs={'photo_id': self.id})
+
+
+
