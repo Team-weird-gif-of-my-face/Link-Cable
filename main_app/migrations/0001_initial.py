@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name="Profile",
+            name='Preference',
             fields=[
                 (
                     "id",
@@ -122,7 +122,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name="Preference",
+            name='Photo',
             fields=[
                 (
                     "id",
