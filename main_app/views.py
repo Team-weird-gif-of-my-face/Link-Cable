@@ -88,7 +88,7 @@ def logout_index(request):
 
 class ProfileCreate(LoginRequiredMixin, CreateView):
   model = Profile
-  fields = ['display_name', 'first_name', 'last_name', 'birthday', 'gender', 'bio', 'favorite_genre']
+  fields = ['display_name', 'first_name', 'last_name', 'birthday', 'gender', 'bio', 'favorite_genre','contact_info']
   success_url = ''
 
   def dispatch(self, request, *args, **kwargs):
@@ -107,7 +107,7 @@ class ProfileCreate(LoginRequiredMixin, CreateView):
 
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
   model = Profile
-  fields = ['display_name', 'bio', 'favorite_genre']
+  fields = ['display_name', 'bio', 'favorite_genre', 'contact_info']
   success_url = ''
   
   def get_success_url(self):

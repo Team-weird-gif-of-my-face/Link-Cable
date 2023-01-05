@@ -63,6 +63,7 @@ class Profile(models.Model):
     favorite_games = models.ManyToManyField(Game)
     likes = models.ManyToManyField('self',symmetrical=False, related_name='liked_by')
     matches = models.ManyToManyField('self', related_name='matched_with')
+    contact_info = models.CharField(max_length=250)
 
     def age(self):
         if(int((datetime.date.today() - self.birthday).days / 365  ) >= 18):

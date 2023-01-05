@@ -37,6 +37,7 @@
                 </p>
                 <p>Bio: {{ profile.bio }}</p>
                 <p>Favorite Game Genre: {{ profile.get_favorite_genre_display }}</p>
+                <p>Contact info: {{ profile.contact_info }}</p>
             </div>
             {% comment %} Like User {% endcomment %}
             <form method='post' action="{% url 'like_user' profile.id %}">

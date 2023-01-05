@@ -2,9 +2,7 @@
 {% block content %}
 
 <h1>Connect</h1>
-{% if not user.profile %}
-<h2> Sign In to start connecting! </h2>
-{% else %}
+<p>Look below for other users who have similar interest to you!</p>
 {% for profile in filtered_profiles %}
 
 <div class="card">
@@ -16,21 +14,18 @@
 <p>Name: {{ profile.first_name }}</p>
 <p>Age: {{ profile.age }}</p>
 <p>Gender: {{ profile.get_gender_display }}</p>
-<p>Favorite Game Genre: {{ profile.get_favorite_genre_display }}</p>
 {% if profile.favorite_games.all %}
     <p>Currently Playing: </p>
     {% for game in profile.favorite_games.all %}
         <p> - {{ game.name }} ({{ game.get_platform_display }})</p>
     {% endfor %}
 {% endif %}
-
-<p>Bio: {{ profile.bio }}</p>
 <hr></hr>
 <p><a href="{% url 'profile_index' profile_id=profile.id %}">View Profile</a></p>
 </div>
 </div>
 {% endfor %}
-{% endif %}
+
 
 
 
