@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Game Details</h1>
+
+<div class="card">
+  <div class="card-content">
+    <span class="card-title">Game: {{ game.name }}</span>
+    <span class="card-title">Platform: {{ game.get_platform_display }}</span>
+  </div>
+  {% if user.is_authenticated %} 
+    {% if user_id == profile.user_id %}
+  <div class="card-action">
+    <a href="{% url 'game_update' game.id %}">Edit game</a>
+    <a href="{% url 'game_delete' game.id %}">Delete game</a>
+  </div>
+    {% endif %} 
+  {% endif %}
+</div>
+
+{% endblock %}

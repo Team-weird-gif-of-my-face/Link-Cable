@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<h1>Add A Profile Picture!</h1>
+
+<form action="{% url 'add_photo' profile.id %}" enctype="multipart/form-data" method="POST" alt="Profile Picture" class="card-panel">
+    {% csrf_token %}
+    <input type="file" name="photo-file">
+    <br><br>
+    Caption:<input type="text" name="caption">
+    <br><br>
+    <input type="submit" class="btn" value="Upload Photo">
+    <a href="/home"> Skip for now</a>
+</form>
+
+{% endblock %}
