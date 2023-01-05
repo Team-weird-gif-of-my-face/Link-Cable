@@ -1,9 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1> Liked Users</h1>
-    <ul>
-        {% for liked in liked_users %}
-            <li> {{liked.name}} </li>
-        {% endfor %}
-    </ul>
+        {% for liked in liked_profiles %}
+        <div class="card">
+            <div class="card-content">
+            {% for photo in liked.photo_set.all %}
+            <img class="responsive-img match-profile-picture" src="{{ photo.url }}" style="float: left">
+            {% endfor %}
+            
+            <p>Name: {{ liked.first_name }}</p>
+            <p>Age: {{ liked.age }}</p>
+            <p>Gender: {{ liked.get_gender_display }}</p>
+            <hr></hr>
+            <p><a href="{% url 'profile_index' profile_id=liked.id %}">View Profile</a></p>
+            </div>
+            </div>
+            {% endfor %}
 {% endblock %}

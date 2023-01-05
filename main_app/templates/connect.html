@@ -3,6 +3,7 @@
 
 <h1>Connect</h1>
 <p>Look below for other users who have similar interest to you!</p>
+<p><a href="{% url 'likes' user.id %}">Likes</a></p>
 {% for profile in filtered_profiles %}
 
 <div class="card">
@@ -22,6 +23,18 @@
 {% endif %}
 <hr></hr>
 <p><a href="{% url 'profile_index' profile_id=profile.id %}">View Profile</a></p>
+<form method='post' action="{% url 'like_user' profile.id %}">
+    {%csrf_token%}
+    {{ form.as_p }}
+    <input type='submit' value='Like'>
+</form>
+{% if messages %}
+    <ul class='messages'>
+        {% for message in messages %}
+            <li {%if message.tags %} class="{{message.tags}}"{%endif%}>{{message}}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 </div>
 </div>
 {% endfor %}

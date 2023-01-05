@@ -24,6 +24,7 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+
 # @login_required
 # def connect(request):
 #   profiles = Profile.objects.exclude(user=request.user)
@@ -67,6 +68,10 @@ def profile_index(request, profile_id):
   profile = Profile.objects.get(id=profile_id)
   return render(request, 'profile/index.html', {'profile': profile})
 
+def likes(request, profile_id):
+    profile = Profile.objects.get(id=profile_id)
+    liked_profiles = profile.likes.all()
+    return render(request, 'main_app/likes_form.html', {'liked_profiles':liked_profiles})
 
 def signup(request):
   error_message = ''
