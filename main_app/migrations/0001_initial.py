@@ -12,13 +12,11 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Game',
+            name="Game",
             fields=[
 
                 (
@@ -30,36 +28,13 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("name", models.CharField(max_length=100)),
-                (
-                    "platform",
-                    models.CharField(
-                        choices=[("X", "Xbox"), ("S", "Playstation"), ("P", "PC")],
-                        default="X",
-                        max_length=1,
-                    ),
-                ),
-                (
-                    "game_genre",
-                    models.CharField(
-                        choices=[
-                            ("ADV", "Adventure"),
-                            ("ACT", "Action"),
-                            ("IND", "Indie"),
-                            ("RPG", "Role Playing Games"),
-                            ("SHO", "Shooting and Combat Games"),
-                            ("SIM", "Simulators"),
-                            ("SPO", "Sports and Racing"),
-                            ("STR", "Strategy and Puzzles"),
-                        ],
-                        default="ADV",
-                        max_length=3,
-                    ),
-                ),
+                ("name", models.CharField(max_length=255)),
+                ("platform", models.CharField(max_length=50)),
+                ("game_genre", models.CharField(max_length=100)),
             ],
         ),
         migrations.CreateModel(
-            name='Preference',
+            name="User",
             fields=[
                 (
                     "id",
@@ -70,59 +45,38 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("display_name", models.CharField(max_length=25)),
-                ("first_name", models.CharField(max_length=25)),
-                ("last_name", models.CharField(max_length=25)),
-                ("birthday", models.DateField(verbose_name="Birthday")),
+                ("username", models.CharField(max_length=255)),
+                ("password", models.CharField(max_length=50)),
+                ("email", models.CharField(max_length=50)),
+                ("first_name", models.CharField(max_length=255)),
+                ("last_name", models.CharField(max_length=255)),
+            ],
+        ),
+        migrations.CreateModel(
+            name="Profile",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("age", models.PositiveIntegerField()),
                 (
                     "gender",
                     models.CharField(
-                        choices=[("M", "Male"), ("F", "Female"), ("N", "Non-Binary")],
-                        max_length=1,
+                        choices=[("M", "Male"), ("F", "Female")], max_length=1
                     ),
                 ),
                 ("bio", models.TextField(blank=True)),
-                (
-                    "favorite_genre",
-                    models.CharField(
-                        choices=[
-                            ("ADV", "Adventure"),
-                            ("ACT", "Action"),
-                            ("IND", "Indie"),
-                            ("RPG", "Role Playing Games"),
-                            ("SHO", "Shooting and Combat Games"),
-                            ("SIM", "Simulators"),
-                            ("SPO", "Sports and Racing"),
-                            ("STR", "Strategy and Puzzles"),
-                        ],
-                        default="ADV",
-                        max_length=3,
-                    ),
-                ),
                 ("favorite_games", models.ManyToManyField(to="main_app.game")),
-                (
-                    "likes",
-                    models.ManyToManyField(
-                        related_name="liked_by", to="main_app.profile"
-                    ),
-                ),
-                (
-                    "matches",
-                    models.ManyToManyField(
-                        related_name="matched_with", to="main_app.profile"
-                    ),
-                ),
-                (
-                    "user",
-                    models.OneToOneField(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to=settings.AUTH_USER_MODEL,
-                    ),
-                ),
             ],
         ),
         migrations.CreateModel(
-            name='Photo',
+            name="Preference",
             fields=[
                 (
                     "id",
@@ -134,53 +88,13 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "interest",
+                    "gender",
                     models.CharField(
-                        choices=[
-                            ("M", "Men"),
-                            ("F", "Female"),
-                            ("N", "Non-Binary"),
-                            ("E", "Everyone"),
-                        ],
-                        default="M",
-                        max_length=1,
+                        choices=[("M", "Male"), ("F", "Female")], max_length=1
                     ),
                 ),
-                (
-                    "age_range_min",
-                    models.IntegerField(
-                        validators=[django.core.validators.MinValueValidator(18)]
-                    ),
-                ),
-                (
-                    "age_range_max",
-                    models.IntegerField(
-                        validators=[django.core.validators.MinValueValidator(18)]
-                    ),
-                ),
-                (
-                    "profile",
-                    models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to="main_app.profile",
-                    ),
-                ),
-            ],
-        ),
-        migrations.CreateModel(
-            name="Photo",
-            fields=[
-                (
-                    "id",
-                    models.BigAutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
-                    ),
-                ),
-                ("url", models.CharField(max_length=200)),
-                ("caption", models.CharField(blank=True, max_length=250)),
+                ("min_age", models.PositiveIntegerField()),
+                ("max_age", models.PositiveIntegerField()),
                 (
                     "profile",
                     models.ForeignKey(
