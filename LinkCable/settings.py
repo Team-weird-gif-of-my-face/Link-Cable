@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+import os
 import environ
 environ.Env()
 environ.Env.read_env()
@@ -81,7 +82,11 @@ WSGI_APPLICATION = "LinkCable.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "linkcable",
+        "NAME": os.environ["DATABASE_NAME"],
+        "USER": os.environ["DATABASE_NAME"],
+        "PASSWORD": os.environ["DATABASE_PASSWORD"],
+        "HOST": os.environ["DATABASE_SERVER"],
+        "PORT": 5432
     }
 }
 
