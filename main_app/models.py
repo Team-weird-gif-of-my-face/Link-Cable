@@ -66,7 +66,6 @@ class Profile(models.Model):
     contact_info = models.TextField(blank=True)
     
 
-
     def age(self):
         if(int((datetime.date.today() - self.birthday).days / 365  ) >= 18):
             return int((datetime.date.today() - self.birthday).days / 365)

@@ -139,11 +139,15 @@ def photo_form(request, profile_id):
 
 
 def add_photo(request, profile_id):
+    # Retrieve the `Profile` object
     profile = get_object_or_404(Profile, pk=profile_id)
 
+    # Check if the `Profile` has a `Photo`
     if profile.photo_set.exists():
+        # Delete the existing `Photo` object
         profile.photo_set.first().delete()
 
+    # Save the new `Photo`
     photo_file = request.FILES.get('photo-file', None)
     caption = request.POST.get('caption', '')
     if photo_file:
