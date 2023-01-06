@@ -10,6 +10,13 @@ Users can update their profiles with information about themselves, including the
 Whether you're looking for a casual gaming buddy or a long-term relationship, our app will help gamers build lasting connections within the gaming community.
 
 
+### Team
+- Bryce Robinson
+- Michael Altrui
+- Owen Tashlin
+- Vy Nguyen
+
+
 ### Technology
 
 - Python
