@@ -23,7 +23,3 @@ urlpatterns = [
   path('photo/<int:pk>/photo_update/', views.PhotoUpdate.as_view(), name='photo_update'),
   path('like/<int:profile_id>/', views.like_user, name='like_user'),
 ]
-
-# if we want to work with function based instead of class based components
-  # path('create_profile/', views.create_profile, name='create_profile'),
-  # path('profile/<int:profile_id>/add_preference/', views.add_preference, name='add_preference'),

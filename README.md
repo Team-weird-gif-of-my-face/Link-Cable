@@ -58,7 +58,15 @@ As a user, AAU, I want the ability to...
 
 ## INSTRUCTIONS
 
-- 
+- Home page and about page are viewable by the public
+- To access more features, sign up and create a profile!
+- Tell us about yourself, add some preferences you have and list some games you play!
+- User will be able to add contact information that will be displayed to their matches
+- Complete your profile and add a profile picture for others to see
+- Profile, preferences, profile picture and game list can be updated at anytime
+- After creating your profile, the connect page will be available to navigate to and view potential matches
+- Matches on your connect page are tailored to your preferences in gender, age, and favorite game genres
+- User will be able to view match profiles in full detail if they appear on their connect page
 
 
 ## Trello Board
@@ -67,10 +75,11 @@ As a user, AAU, I want the ability to...
 
 
 ## Planned future enhancements
-- implement visual themes that users can select
-- create moderator profile
-- implement live chat with static rooms and private chats between users
-- implement a blog feature where users can post about the games they are playing 
+
+- Implement visual themes that users can select
+- Create moderator profile
+- Implement live chat with static rooms and private chats between users
+- Implement a blog feature where users can post about the games they are playing
 
 
 ## Credits
