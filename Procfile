@@ -1,1 +1,1 @@
-web: gunicorn linkcable.wsgi
+web: gunicorn LinkCable.wsgi
