@@ -46,7 +46,13 @@ As a user, AAU, I want the ability to...
 
 ## Screenshots
 
-![Index](URL)
+![Index](main_app/static/images/index.png)
+![Login Page](main_app/static/images/loginpage.png)
+![Sign-up Page](main_app/static/images/signup.png)
+![Profile Page](main_app/static/images/profile.png)
+![Connect Page](main_app/static/images/connect.png)
+![About Page](main_app/static/images/about.png)
+![Logout Page](main_app/static/images/logout.png)
 
 
 

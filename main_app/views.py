@@ -24,19 +24,9 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
-# @login_required
-# def connect(request):
-#   profiles = Profile.objects.exclude(user=request.user)
-#   userProfile = Profile.objects.get(user=request.user)
-#   preference = Preference.objects.get(profile = userProfile)
-#   interest = preference.interest
-#   minAge = preference.age_range_min
-#   maxAge = preference.age_range_max
-#   filteredProfiles = Profile.objects.exclude(user=request.user).filter(favorite_genre =userProfile.favorite_genre)
-#   return render(request, 'connect.html', {'filteredProfiles':filteredProfiles})
-
 @login_required
 def connect(request):
+
   try:
     user_profile = Profile.objects.get(user=request.user)
     preference = Preference.objects.get(profile=user_profile)
@@ -60,6 +50,7 @@ def connect(request):
   except Preference.DoesNotExist:
     profile = request.user.profile
     return redirect('/profile/' + str(profile.id) + '/add_preference')
+
 
 
 @login_required
@@ -141,8 +132,18 @@ class PreferenceUpdate(LoginRequiredMixin, UpdateView):
     profile_id = self.object.profile_id
     return f'/profile/{profile_id}'
 
+@login_required
+def photo_form(request, profile_id):
+  profile = Profile.objects.get(id=profile_id)
+  return render(request, 'profile/upload_photo.html', {'profile': profile})
+
 
 def add_photo(request, profile_id):
+    profile = get_object_or_404(Profile, pk=profile_id)
+
+    if profile.photo_set.exists():
+        profile.photo_set.first().delete()
+
     photo_file = request.FILES.get('photo-file', None)
     caption = request.POST.get('caption', '')
     if photo_file:
@@ -152,11 +153,13 @@ def add_photo(request, profile_id):
             bucket = os.environ['S3_BUCKET']
             s3.upload_fileobj(photo_file, bucket, key)
             url = f"{os.environ['S3_BASE_URL']}{bucket}/{key}"
-            Photo.objects.create(url=url, caption=caption, profile_id=profile_id)
+            Photo.objects.create(url=url, caption=caption, profile=profile)
         except Exception as e:
             print('An error occurred uploading file to S3')
             print(e)
     return redirect('/profile/' + str(profile_id), profile_id=profile_id)
+
+
 
 def photo_detail(request, photo_id):
   photo = Photo.objects.get(id=photo_id)
@@ -195,7 +198,7 @@ class GameCreate(LoginRequiredMixin, CreateView):
 
       self.success_url = reverse('profile_index', kwargs={'profile_id': profile.id})
       return super().form_valid(form)
-# saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
+
 
 def game_detail(request, game_id):
   game = Game.objects.get(id=game_id)
@@ -244,54 +247,3 @@ def like_user(request, profile_id):
   else:
     form = LikeForm()
   return render(request, 'index.html', {'form':form, 'user':liked_user})
-
-
-
-# saves game instance, gets profile we logged into and attaches game to that profile, then returns us with success url to profile/id
-
-  
-
-
-# if we want to work with function based instead of class based components
-
-# @login_required
-# def create_profile(request):
-#   error_message = ''
-#   try:
-#     request.user.profile
-#     return redirect('home')
-#   except Profile.DoesNotExist:
-#     if request.method == 'POST':
-#       form = ProfileForm(request.POST)
-#       if form.is_valid():
-#         profile = form.save(commit=False)
-#         profile.user = request.user
-#         profile.save()
-#         return redirect('/profile/' + str(profile.id) + '/add_preference')
-#       else:
-#         error_message = 'Invalid profile - try again'
-#     form = ProfileForm()
-#     context = {'form': form, 'error_message': error_message}
-#     return render(request, 'profile/create_profile.html', context)
-
-
-# @login_required
-# def add_preference(request, profile_id):
-#   error_message = ''
-#   if Preference.objects.filter(profile=request.user.profile).exists():
-#     return redirect('/')
-#   profile = request.user.profile
-#   if request.method == 'POST':
-#       form = PreferenceForm(request.POST)
-#       if form.is_valid():
-#         preference = form.save(commit=False)
-#         preference.profile = profile
-#         preference.save()
-#         return redirect('/profile/' + str(profile.id))
-#       else:
-#         error_message = 'Invalid preference - try again'
-#         form = PreferenceForm()
-#   else:
-#       form = PreferenceForm()
-#   context = {'form': form, 'error_message': error_message}
-#   return render(request, 'profile/add_preference.html', context)

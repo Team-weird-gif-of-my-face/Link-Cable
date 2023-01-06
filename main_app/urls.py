@@ -16,6 +16,7 @@ urlpatterns = [
   path('game/<int:game_id>/', views.game_detail, name='game_detail'),
   path('game/<int:pk>/game_update/', views.GameUpdate.as_view(), name='game_update'),
   path('game/<int:pk>/delete/', views.GameDelete.as_view(), name='game_delete'),
+  path('profile/<int:profile_id>/photo_form', views.photo_form, name='photo_form'),
   path('profile/<int:profile_id>/add_photo/', views.add_photo, name='add_photo'),
   path('photo/<int:photo_id>/', views.photo_detail, name='photo_detail'),
   path('photo/<int:pk>/delete/', views.PhotoDelete.as_view(), name='photo_delete'),

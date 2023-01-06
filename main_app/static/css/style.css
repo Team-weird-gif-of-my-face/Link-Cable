@@ -15,16 +15,20 @@ a:hover{
   color:#8DAA9D;
 }
 
+<<<<<<< HEAD
 main {
     flex: 1 0 auto;
+=======
+.image-btn {
+  position: absolute;
+  margin: -30px 0 30px 50px;
+>>>>>>> vy
 }
 
-a {
-color: #522B47;
-}
-
-a:hover{
-color:#8DAA9D;
+.no-image-btn {
+  position: absolute;
+  margin-top: -10px;
+  margin-left: 10px;
 }
 
 main {
@@ -32,6 +36,10 @@ main {
 }
 
 footer.page-footer {
+<<<<<<< HEAD
+=======
+
+>>>>>>> vy
     padding-top: 0;
     text-align: right;
     background-color: #522B47;
@@ -48,6 +56,8 @@ footer.page-footer {
   margin-left: auto;
   margin-right: auto;
   display: block;
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
 }
 
@@ -81,12 +91,22 @@ footer.page-footer {
     -webkit-transform: scale(1);
             transform: scale(1);
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> vy
 }
 
 .card {
   width: auto;
+<<<<<<< HEAD
   height: 350px;
   background-color: whitesmoke;
+=======
+  height: 380px;
+  background-color: whitesmoke;
+
+>>>>>>> vy
 }
 
 
@@ -100,9 +120,13 @@ footer.page-footer {
 .show {
   visibility: visible;
   position: sticky;
-  bottom: 0;
+  bottom: 15px;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> vy
 @media screen and (max-width: 1000px) {
   .hidden {
     visibility: hidden;
@@ -143,6 +167,10 @@ footer.page-footer {
     margin-left: 60px;
     margin-top: 150px;
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> vy
 }
 
 
