@@ -62,7 +62,6 @@ class Profile(models.Model):
     favorite_genre = models.CharField(max_length=3,choices=GENRE, default=GENRE[0][0])
     favorite_games = models.ManyToManyField(Game)
     likes = models.ManyToManyField('self',symmetrical=False, related_name='liked_by')
-    matches = models.ManyToManyField('self', related_name='matched_with')
     contact_info = models.TextField(blank=True)
     
 
