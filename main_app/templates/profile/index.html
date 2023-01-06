@@ -9,7 +9,10 @@
     <div class="card card-panel teal-text center-align">
         
     <img class="responsive-img profile-picture" src="{{photo.url}}"></a>
+
+    {% if user.id == profile.user_id %}
     <a class="btn-floating btn-medium teal image-btn" href="{% url 'photo_form' profile.id %}"><i class="material-icons">add_circle_outline</i></a>
+    {% endif %}
     <p>"{{photo.caption}}"</p>
 
     {% if user.id == profile.user_id %}
@@ -33,12 +36,13 @@
                 <p>Contact info: {{ profile.contact_info }}</p>
                 <p>Bio: {{ profile.bio }}</p>
             </div>
-
+            {% if user.id != profile.user_id %}
             <form method='post' action="{% url 'like_user' profile.id %}">
                 {%csrf_token%}
                 {{ form.as_p }}
                 <input type='submit' value='Like'>
             </form>
+            {% endif %} 
 
             {% if user.id == profile.user_id %}
             <div class="card-action">

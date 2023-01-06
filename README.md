@@ -77,4 +77,4 @@ As a user, AAU, I want the ability to...
 
 Wireframes and ERD were created using [Lucidchart](https://www.lucidchart.com/).
 
-gameboy by Zero Team0 from <a href="https://thenounproject.com/browse/icons/term/gameboy/" target="_blank" title="gameboy Icons">Noun Project</a>
+Gameboy by Zero Team0 from [Noun Project](https://thenounproject.com/browse/icons/term/gameboy/).

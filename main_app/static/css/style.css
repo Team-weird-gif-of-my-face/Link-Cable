@@ -95,14 +95,14 @@ footer.page-footer {
 
 
 .match-profile-picture {
-  max-width: 100px;
-  max-height: 75px;
+  max-width: 400px;
+  max-height: 300px;
   float: left;
   margin: 0 10px 0 0;
 }
 
 .show {
-  visibility: visible;
+  visibility: hidden;
   position: sticky;
   bottom: 15px;
 }

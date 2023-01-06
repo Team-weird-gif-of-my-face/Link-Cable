@@ -34,12 +34,10 @@ def connect(request):
     min_age = preference.age_range_min
     max_age = preference.age_range_max
 
-    # filter profiles by favorite genre and interest
     filtered_profiles = Profile.objects.exclude(user=request.user).filter(
         Q(favorite_genre=user_profile.favorite_genre) & Q(gender=interest)
     )
 
-    # filter by age range
     filtered_profiles = filtered_profiles.filter(
         birthday__gte=datetime.date(year=datetime.datetime.now().year - max_age, month=1, day=1),
         birthday__lte=datetime.date(year=datetime.datetime.now().year - min_age, month=1, day=1)
